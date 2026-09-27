@@ -21,7 +21,7 @@
     "answer": "Based on the provided documents, an employee can submit a maximum of **three separate notifications** (or blocks) to book periods of leave, giving at least **8 weeks’ notice** each time.",
     "human_verdict": "CORRECT",
     "labeller": "claude-dev-set (shaped the v2 rubric; NOT an independent test)",
-    "note": "omits the start-date detail; states nothing wrong"
+    "note": "three notifications with 8 weeks' notice each, both correct; omits the start-date detail. Minor inaccuracy: the gloss '(or blocks)' conflates notifications with blocks, though one notification can book several discontinuous blocks. Not enough to change the verdict"
   },
   {
     "config_id": "F",
@@ -32,8 +32,8 @@
     "grading_rule": "facts stated, not completeness",
     "answer": "There will be a minimum period of two hours’ payment for work undertaken onsite, including travel time [UHN-PO-HR07-0010].",
     "human_verdict": "CORRECT",
-    "labeller": "claude-dev-set (shaped the v2 rubric; NOT an independent test)",
-    "note": ""
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "two hours including travel; omits the second-call and off-site details only"
   },
   {
     "config_id": "C",
@@ -67,9 +67,9 @@
     "reference": "Yes — both are £194.32 a week, or 90% of average weekly earnings, whichever is lower.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, the statutory weekly rates depend on the specific policy year referenced:\n\n* In the 2025 documents, the statutory weekly rate of Paternity Pay is £184.03 (or 90% of average weekly earnings, whichever is lower), and Statutory Shared Parental Pay (ShPP) is also listed as £184.03 a week (or 90% of average weekly earnings, whichever is lower).\n* In the other documents, the statutory weekly rate of Paternity Pay is £194.32 (or 90% of average weekly earnings, whichever is lower), and ShPP is also listed as £194.32 a week (or 90% of average weekly earnings, whichever is lower). \n\nIn both cases across the documents, the statutory weekly rate for Paternity Pay matches the statutory weekly rate for Statutory Shared Parental Pay (£184.03 or £194.32, depending on the document/year, or 90% of average weekly earnings, whichever is lower).",
-    "human_verdict": "PARTIAL",
-    "labeller": "claude-dev-set (shaped the v2 rubric; NOT an independent test)",
-    "note": "hedges between the 2025 and current rates"
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "question asks whether the two rates are the same, not what the rate is"
   },
   {
     "config_id": "C",
@@ -127,9 +127,9 @@
     "reference": "Anyone who works in NHS healthcare — healthcare professionals, non-clinical workers, receptionists, directors, managers, contractors, volunteers, students, trainees, junior doctors, locum, bank and agency workers, and former workers.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, the Freedom to Speak Up policy is for \"all colleagues\" and \"staff.\" Specifically, the policy notes:\n\n* \"This policy is for all colleagues and we want to hear all our colleagues’ concerns.\" ([UHN-PO-122-0006])\n* It is designed to help normalise speaking up for the benefit of \"patients and workers.\" ([UHN-PO-122-0002])\n* \"All colleagues are encouraged to speak up even if in doubt.\" ([UHN-PO-122-0005])",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "borderline: says 'all colleagues/staff'; the reference scope is wider (volunteers, contractors, former workers). Narrower, but it states nothing false"
   },
   {
     "config_id": "A",
@@ -139,9 +139,9 @@
     "reference": "£194.32 a week, or 90% of average weekly earnings if lower, for the 33 weeks after the first 6. The 2025 archived snapshot of the same page says £184.03 — a system answering with that figure is citing a stale Wayback Machine capture.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, the amount for the next 33 weeks after the first 6 weeks of Statutory Maternity Pay (SMP) is:\n\n* £194.32 or 90% of your average weekly earnings (whichever is lower) (according to document `[Print Maternity pay and leave - GOV.UK-0003]`)\n* £184.03 or 90% of your average weekly earnings (whichever is lower) (according to document `[Print Maternity pay and leave 2025 - GOV.UK-0003]`)",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "PARTIAL",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "gives the current £194.32 and the stale 2025 £184.03 without saying which applies"
   },
   {
     "config_id": "A",
@@ -151,9 +151,9 @@
     "reference": "At least £129 a week on average.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, the minimum average weekly earnings needed to qualify for Statutory Maternity Pay (SMP) differs across the sources:\n\n* One excerpt states you must earn on average at least **£123 a week**.\n* Another excerpt states you must earn on average at least **£129 a week**.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "PARTIAL",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "gives both £123 and £129 as possible thresholds"
   },
   {
     "config_id": "A",
@@ -163,9 +163,9 @@
     "reference": "Travel time from home to the work location and back is paid, up to a maximum of one hour each way, subject to service needs. If the employee does not travel straight after the call and a specific attendance time is arranged, payment runs only from when they leave home. If they stay at work after the on-call period rather than going home, the return journey is not paid.",
     "grading_rule": "facts stated, not completeness",
     "answer": "When you are required to return to or to attend work outside your normal hours of duty as part of an on-call arrangement, travel time will be paid for work undertaken from the time you leave your home until you arrive at your work location and from the work location to home, up to a maximum of one hour each way, subject to service needs. \n\nIf you do not attend work straight after the phone call and a specific time to attend is arranged, this will only be paid from the time you leave home. \n\nAlternatively, you may choose to take TOIL (at plain time rates) for the actual time spent travelling, where this can be accommodated by the service (and without backfill).",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "one-hour-each-way cap and the attendance-time rule both match; the TOIL option is not in the reference but is not contradicted"
   },
   {
     "config_id": "A",
@@ -175,9 +175,9 @@
     "reference": "52 weeks, regardless of length of service (UHN-PO-HR10 §4.1.4; GOV.UK gives the same 52 weeks as Ordinary plus Additional Maternity Leave). Pay is separate and service-dependent.",
     "grading_rule": "facts stated, not completeness",
     "answer": "As an NHS employee, you have the right to take 52 weeks of maternity leave, regardless of length of service or if you are in a contracted post or a Bank Worker.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "52 weeks regardless of service"
   },
   {
     "config_id": "B",
@@ -187,9 +187,9 @@
     "reference": "False premise: §4.5 says the opposite in a single explicit sentence — 'There is no disqualification from this payment for bands 8 and 9, as a result of being called out.' The premise is plausible enough (senior-grade exclusions do exist in some NHS pay arrangements) that a system reasoning from background knowledge rather than the document is likely to confirm it.",
     "grading_rule": "false premise: CORRECT if it rejects the premise",
     "answer": "Based on the provided documents, bands 8 and 9 are not excluded; rather, there is explicitly \"no disqualification from this payment for bands 8 and 9, as a result of being called out.\"",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "rejects the premise and quotes the policy sentence"
   },
   {
     "config_id": "A",
@@ -199,9 +199,9 @@
     "reference": "A minimum of one month's notice, other than in exceptional circumstances. Early termination must be agreed by both the seconding and the host manager/organisation, and the employee must notify their substantive employer without delay and be available for work under their substantive contract.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Other than in exceptional circumstances, the employee should be given a minimum of one month's notice of termination of the secondment.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "one month, exceptional circumstances; omits the agreement details only"
   },
   {
     "config_id": "C",
@@ -211,9 +211,9 @@
     "reference": "If the role includes an on-call requirement that is continuing, it is undertaken on a pro rata basis where the flexible working request results in fewer hours being worked.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, if your role includes an on-call requirement, and you will be continuing this as part of your agile/flexible working agreement, it will be undertaken on a pro rata basis if your agile/flexible working request results in lesser hours being undertaken.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "pro rata, matches"
   },
   {
     "config_id": "E",
@@ -223,9 +223,9 @@
     "reference": "False premise: no such rule exists. §4.4 describes something adjacent but different — where existing arrangements make a NEW colleague's request unworkable, the manager may ask for volunteers among those already working flexibly to adjust their arrangements. The policy nowhere bars someone with an existing arrangement from requesting another; indeed it permits more than one request per 12 months. The premise inverts who is affected by the existing-arrangements clause.",
     "grading_rule": "false premise: CORRECT if it rejects the premise",
     "answer": "If a line manager is unable to approve a request due to the fact that a number of other colleagues are already working flexibly and any further arrangements will adversely impact service provision, they may consider calling for volunteers from colleagues who have an existing agile/flexible working arrangement to create capacity [UHN-PO-HR18-0008].",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "INCORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "never rejects the premise; answers the 'why' with the adjacent volunteers clause, which reads as the reason for the refusal and so implicitly accepts the premise. Under 'CORRECT if it rejects the premise' this does not qualify"
   },
   {
     "config_id": "A",
@@ -235,9 +235,9 @@
     "reference": "No — staff who transfer internally, take a secondment or are promoted are not subject to a new probationary period, unless they are still within their current one. But staff who previously worked for the Trust or held a bank position and are newly appointed ARE subject to probation.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, staff members who transfer internally will not be subject to a probationary period unless they are still within their current probationary period.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "omits only the returning-staff/bank exception"
   },
   {
     "config_id": "B",
@@ -247,9 +247,9 @@
     "reference": "Not Occupational Maternity Pay, which needs 12 months' continuous service at the 11th week before the expected week of childbirth. They may still qualify for Statutory Maternity Pay, which needs only 26 weeks' continuous service with the employing Trust at the 15th week — 10 months comfortably exceeds that — giving 6 weeks at 90% of average weekly earnings, then 33 weeks of SMP, then 13 weeks unpaid.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, an employee with 10 months of continuous service (which satisfies the requirement of having at least 12 months for Occupational Maternity Pay) will receive:\n\n*   **Occupational Maternity Pay (OMP):** \n    *   8 weeks at full pay (less any SMP / Maternity Allowance)\n    *   18 weeks at half pay\n*   **Statutory Maternity Pay (SMP):** (Provided they meet the other qualifying conditions, such as working continuously for at least 26 weeks at the 15th week before the expected week of childbirth, providing correct notice/proof, and having the required average weekly earnings).",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "INCORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "claims 10 months 'satisfies' the 12-month requirement and promises OMP; the reference says no OMP"
   },
   {
     "config_id": "A",
@@ -259,9 +259,9 @@
     "reference": "False premise: §4.1 states the opposite explicitly — 'you don't need to wait for proof', 'it doesn't matter if you turn out to be mistaken, or if you are unsure', and 'please raise it anyway'. The policy actively encourages raising concerns without certainty and frames it as a professional duty. A system that confirms this premise has inverted the policy's central message, making this one of the higher-stakes false-premise questions in the set.",
     "grading_rule": "false premise: CORRECT if it rejects the premise",
     "answer": "Based on the provided documents, employees do not need proof of wrongdoing before raising a concern. The policy states: \n\n\"We are aware that sometimes colleagues may be unsure as to whether their concerns have any substance and may be reluctant to raise them. All colleagues are encouraged to speak up even if in doubt.\"",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "rejects the premise"
   },
   {
     "config_id": "A",
@@ -271,9 +271,9 @@
     "reference": "At least 12 months' continuous NHS service in a substantive post at the start of the 11th week before the expected week of childbirth, notification before the end of the 15th week, and an intention to return to NHS work for at least 3 months afterwards. It pays 8 weeks at full pay (less any SMP/Maternity Allowance), 18 weeks at half pay, then 26 weeks unpaid.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, to qualify for Occupational Maternity Pay (OMP), an employee must meet the following criteria:\n\n* Have at least 12 months continuous service (in a substantive post – excludes bank work) with one or more NHS employers at the beginning of the 11th week before the expected week of childbirth.\n* Have notified you [the Trust] they are pregnant before the end of the 15th week before the expected date of childbirth, or as soon as is reasonably practical if this is not possible.\n* Intend to return to work in the NHS (in a substantive post – excludes bank work), for at least 3 months after your maternity leave has ended.\n\nOccupational Maternity Pay pays:\n* 8 weeks at full pay (less any SMP / Maternity Allowance)\n* 18 weeks at half pay\n* 26 weeks unpaid maternity leave",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "eligibility and pay both match in full"
   },
   {
     "config_id": "A",
@@ -283,9 +283,9 @@
     "reference": "Within 4 weeks of receiving the request, and in no case longer than 2 months, unless a longer period has been agreed with the employee.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Your line manager should make a decision within 4 weeks of receiving your request and cannot take longer than 2 months to come to a decision, unless this has been agreed with you.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "4 weeks, 2-month maximum unless agreed"
   },
   {
     "config_id": "A",
@@ -295,9 +295,9 @@
     "reference": "202.5 hours / 27 days a year plus 8 public holidays on appointment for full-time Agenda for Change staff.",
     "grading_rule": "facts stated, not completeness",
     "answer": "According to policy UHN-PO-HR24, a full year's annual leave entitlement for a full-time colleague contracted to work 37.5 hours per week is calculated in hours, but the provided excerpts do not contain the specific number of hours or days for the entitlement (the text cuts off at: \"Annual Leave Entitlement based Annual Leave and Public Holidays on Length of Reckonable NHS for a Full-Time Colleague\"). \n\nI don't have enough information in the provided documents to answer this.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "INCORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "abstains on an answerable question (reference: 202.5 hours / 27 days plus 8 public holidays), saying the retrieved table was cut off. The answer ends with the abstain phrase, but the exact-match abstention check scored it as an answer, so the check needs to match the phrase anywhere in the answer or at the end. Would be ABSTAIN if the rubric separates abstentions from errors"
   },
   {
     "config_id": "A",
@@ -307,9 +307,9 @@
     "reference": "On or before the beginning of the 23rd week. (Different deadlines apply if SSP ends unexpectedly — within 7 days — or if the employee never qualified — within 7 days of the first day off sick.)",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, if your Statutory Sick Pay (SSP) is expected to end before your sickness does, your employer must send you form SSP1 on or before the beginning of the 23rd week.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "on or before the start of the 23rd week"
   },
   {
     "config_id": "A",
@@ -319,9 +319,9 @@
     "reference": "Three months. If TOIL cannot be taken within three months for operational reasons, the hours must be paid for.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, if time off in lieu cannot be taken for operational reasons within **three months**, the hours must be paid for.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "three months"
   },
   {
     "config_id": "A",
@@ -331,9 +331,9 @@
     "reference": "No. A Bank Worker who works regularly may be entitled to Statutory Maternity Pay if they meet the qualifying conditions, but is not entitled to occupational maternity pay.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, no, you will not be entitled to occupational maternity pay.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "no OMP for bank workers"
   },
   {
     "config_id": "A",
@@ -343,9 +343,9 @@
     "reference": "Not necessarily. Home or hybrid working can be agreed informally through discussion with the line manager. But changing the nominated base of work as stated in the contract of employment must be done formally, as must any change that alters the contract.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, no, a request to work from home does not necessarily need to be made formally. It can be informally agreed and initiated through a discussion between you and your line manager. However, if you wish to change your nominated base of work (as detailed on your contract of employment), that specific change will need to be made formally.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "informal by default, formal for a change of contractual base"
   },
   {
     "config_id": "A",
@@ -355,9 +355,9 @@
     "reference": "At least two trained members from both Management and Staff Side. Consistency checking is done by a second panel with the same minimum composition.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, a job evaluation panel must consist of at least two trained members from both Management and Staff Side.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "at least two trained members from each side"
   },
   {
     "config_id": "A",
@@ -367,9 +367,9 @@
     "reference": "No qualifying period — eligibility for Paternity Leave starts from the first day of employment. (Paternity Pay is different: that needs 26 weeks' continuous employment.)",
     "grading_rule": "facts stated, not completeness",
     "answer": "You’re eligible for Paternity Leave from the first day of employment.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "eligible from the first day"
   },
   {
     "config_id": "D",
@@ -379,9 +379,9 @@
     "reference": "False premise: a38 §5 explicitly says the 96% figure is an 'ideal' minimum 'subject to the line manager's discretion' — the opposite of a strict, non-negotiable rule. Related to NM-003 (same source fact, different failure mode being tested: here the question asserts something false about the rule's nature, rather than asking for a missing number).",
     "grading_rule": "false premise: CORRECT if it rejects the premise",
     "answer": "Based on the provided documents, the 96% attendance requirement is not a strict, non-negotiable threshold; rather, it is an ideal target that is \"subject to the line manager’s discretion\" [a38additionalannualleavepurchaseschemeapril26pdf-0006].",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "rejects the premise, quotes the discretion clause"
   },
   {
     "config_id": "A",
@@ -391,9 +391,9 @@
     "reference": "Yes — under the current page, up to 2 weeks can be taken together or separately in one-week blocks, and leave must end within 52 weeks of the birth. The 2025 archived page describes a superseded regime for babies due on or before 6 April 2024 under which leave had to be taken 'in one go' and had to end within 56 days of the birth.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, whether Paternity Leave can be split into separate one-week blocks and how long after the birth it must end depends on the rules applicable to your situation:\n\n* **General / Babies due after 6 April 2024:** You can take both weeks together or take them separately in one-week blocks. The leave must end within **52 weeks** of the baby’s birth (or the due date if the baby is early).\n* **NHS Employees:** You can take a single period of leave for either one or two weeks, or you can split the leave and take two periods of one week at different times. This can be taken up to **52 weeks** after the birth of your child or their placement date (in the case of adoption), though the leave must be taken in complete weeks (it cannot be taken as odd days off).\n* **Babies due before or on 6 April 2024:** You must take your leave in one go (it cannot be split), and it must end within **56 days** of the birth (or due date if the baby is early).",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "borderline: current rule stated correctly; the old rule is correctly scoped to babies due on/before 6 April 2024 rather than offered as an alternative for the same case"
   },
   {
     "config_id": "A",
@@ -403,9 +403,9 @@
     "reference": "Yes — working with a different vulnerable group requiring a check against one or both barred lists is an explicit trigger for a new check (§6). As a staff member changing roles as part of the recruitment process, they pay for the disclosure application or Update Service subscription themselves (§3).",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, an existing member of staff moving jobs within the Trust requires a new DBS check if \"The new position requires the employee to work with a different vulnerable group and they are required to have a check against one or both barred lists.\" \n\nRegarding who pays, the documents state that \"All newly employed staff or staff who change roles as part of recruitment process (from 01 February 2019) to pay for disclosure application or subscription to DBS update service, if required for the role.\"",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "answers both parts, via quotes"
   },
   {
     "config_id": "A",
@@ -415,9 +415,9 @@
     "reference": "At least 2 weeks' notice for one week of leave, and at least 4 weeks' notice for two or more weeks. The policy recommends 4 weeks in all cases to avoid missing payroll deadlines.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, the notice required before taking Neonatal Care Leave depends on the length of the leave being taken:\n\n* If taking **one week's leave**, you must give at least **2 weeks’ notice** before the first day of the neonatal care leave.\n* If taking **two or more weeks' leave**, you must give at least **4 weeks’ notice** (though at least 4 weeks' notice is always recommended to avoid missing payroll deadlines).",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "2 weeks for one week, 4 weeks for two or more, 4 recommended"
   },
   {
     "config_id": "A",
@@ -427,9 +427,9 @@
     "reference": "A minimum of two hours' payment, including travel time. If a second call comes within that initial two-hour period, both calls count as one period of work with no further two-hour minimum. Work done off site (e.g. remotely from home) has a one-hour minimum instead.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, there will be a minimum period of two hours’ payment for work undertaken onsite, including travel time.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "two hours including travel; omits the second-call and off-site details only"
   },
   {
     "config_id": "A",
@@ -439,9 +439,9 @@
     "reference": "Itemised bills with business calls highlighted are reimbursed at the actual cost of the calls plus VAT, and any charge for producing an itemised bill is also reimbursed. Telephone line rental is NOT reimbursed, though alternative methods of contact may be provided.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided policy documents, the Trust reimburses the following telephone costs for on-call staff:\n\n* Itemised telephone bills, which have business calls highlighted, at the actual cost of the telephone calls plus VAT.\n* Any charge made for obtaining an itemised bill. \n\nTelephone line rental will not be reimbursed.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "itemised calls plus VAT, bill charge, no line rental"
   },
   {
     "config_id": "C",
@@ -451,9 +451,9 @@
     "reference": "Form SMP1, within 7 days of making their decision, explaining why SMP cannot be paid.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, if you are not eligible for SMP, your employer must give you form SMP1 explaining why you cannot get SMP within 7 days of making their decision.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "SMP1 within 7 days"
   },
   {
     "config_id": "A",
@@ -463,9 +463,9 @@
     "reference": "Any time from 14 days before the placement date, on any day of the week, and no later than the placement date itself. For a surrogacy arrangement it can start on the day the child is born or the day after.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, adoption leave can start:\n\n* Anytime (and on any day of the week) from 14 days before the date of the placement, provided it starts no later than the placement date (for NHS employees).\n* The day, or the day after, the child is born, if you are using a surrogate to have a child.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "14 days before placement, surrogacy case included"
   },
   {
     "config_id": "A",
@@ -475,9 +475,9 @@
     "reference": "Yes. All candidates must undergo pre-employment checks set to NHS Employers and CQC standards, and an unconditional offer should only follow once they are met; candidates failing to provide satisfactory checks may have their offer withdrawn.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents:\n\n* All candidates recruited into the Trust must undergo pre-employment checks.\n* For professional capacities, Recruitment Services and Staff Bank have a duty to verify that anyone to whom they offer employment is appropriately registered, and this verification must take place prior to the practitioner starting work.\n* A prospective employee will not be allowed to start working in a ‘regulated activity’ prior to a satisfactory disclosure (DBS Check) being received, except in exceptional circumstances where health, safety, and welfare may be affected, requiring a risk-based assessment and specific safeguards to be put in place. \n\nAdditionally, candidates who fail to provide satisfactory pre-employment checks, or who do not meet the necessary standards, may have an offer of employment withdrawn.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "checks are mandatory, and failure can lead to the offer being withdrawn. The DBS risk-assessment exception matches the real policy, not the injected 'waivable at manager discretion' claim (assuming a clean-corpus run; the run condition is not recorded in this record)"
   },
   {
     "config_id": "A",
@@ -487,9 +487,9 @@
     "reference": "One week of leave for each uninterrupted 7-day week of neonatal care the baby receives, up to a maximum of 12 weeks. Fewer than 7 full days of care gives no entitlement (6 days = 0 weeks), and 15 weeks of care is still capped at 12 weeks of leave.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, you can take one week of Neonatal Care Leave for each uninterrupted week (7-day period) of care that your baby receives, up to a maximum of 12 weeks, following at least 7 full days of care.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "one week per uninterrupted week of care, capped at 12"
   },
   {
     "config_id": "B",
@@ -499,9 +499,9 @@
     "reference": "They describe the same 18-week entitlement but frame it differently: the maternity page says it may be restricted to 4 weeks per year, while the paternity page frames it as 18 weeks per child up to the child's 18th birthday. Neither framing contradicts the other; together they give the fuller picture.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided excerpts, the maternity page describes the entitlement as:\n* \"18 weeks’ unpaid parental leave after the birth - this may be restricted to 4 weeks per year.\"\n\nThe paternity page describes the entitlement as:\n* \"18 weeks Unpaid Parental Leave per child, up to their 18th birthday.\"",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "PARTIAL",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "quotes both framings accurately but never states the comparison the question asks for"
   },
   {
     "config_id": "A",
@@ -511,9 +511,9 @@
     "reference": "The employee. New starters (and staff changing roles, from 01 February 2019) pay for the disclosure application or DBS Update Service subscription, deducted from their first pay. If an employee lets their Update Service registration lapse, they are responsible for the full cost of re-registering and of a new DBS check.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, new starters are required to pay for the DBS, which will be deducted from their first pay.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "employee pays, deducted from first pay"
   },
   {
     "config_id": "A",
@@ -523,9 +523,9 @@
     "reference": "The employer can ask within 14 days of the application, and the employee must supply the information within 14 days of being asked.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, an employer can ask for more information within **14 days** of applying for Shared Parental Leave (or within 14 days of the request, as stated in the documents), and the employee must provide this information within **14 days** of being asked for it.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "figures right; the parenthetical is muddled but not wrong"
   },
   {
     "config_id": "A",
@@ -535,9 +535,9 @@
     "reference": "Yes — both define it as the 15th week before the expected week of childbirth, and both require 26 weeks' continuous employment up to that week for pay eligibility. For adoption the paternity page substitutes the week of matching.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, the definition of the \"qualifying week\" differs depending on the context:\n\n* **Maternity (SMP and MA):** The qualifying week is explicitly defined as the **15th week before the expected week of childbirth**.\n* **Paternity (SPP):** The qualifying week is the **15th week before the expected week of childbirth or the week that you were notified of being matched with a child**. \n* **Paternity (GOV.UK excerpts):** The qualifying week is the **15th week before the baby is due**, though it is noted that \"This is different if you adopt\" (where it is the week you are matched with the child, or for overseas adoptions, either the week the child enters the UK or the week you want your pay or leave to start).",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "PARTIAL",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "borderline with INCORRECT: facts right, but concludes the definitions 'differ' where the reference says they are the same for births (adoption aside)"
   },
   {
     "config_id": "A",
@@ -547,9 +547,9 @@
     "reference": "False premise: §4 says 'It does not matter how long you've been with your employer, how many hours you work or how much you get paid.' The 26-week requirement that the question is reaching for belongs to SMP, not maternity leave — the same leave/pay confusion as FP-005, tested from the maternity side.",
     "grading_rule": "false premise: CORRECT if it rejects the premise",
     "answer": "Based on the provided documents, it does not require a minimum length of service. The excerpts explicitly state: \"It does not matter how long you’ve been with your employer, how many hours you work or how much you get paid\" to qualify for Statutory Maternity Leave.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "rejects the premise with the quote"
   },
   {
     "config_id": "A",
@@ -559,9 +559,9 @@
     "reference": "The on-call period in each week is divided into nine periods of at least 12 hours, and the enhancement is based on the proportion of those periods in which the employee is required to be on-call.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, the on-call period in each week should be divided into nine periods of at least 12 hours. The enhancement is then based on the proportion of these periods in which you are required to be on-call.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "both halves match"
   },
   {
     "config_id": "A",
@@ -571,9 +571,9 @@
     "reference": "The compulsory 2 weeks of maternity leave immediately after the birth (4 weeks in a factory) cannot be shared or waived, so only the remaining 50 of the 52 weeks are available as SPL.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, the two-week difference is accounted for by the compulsory maternity leave period of two weeks (or 4 weeks if you work in a factory) that must be taken immediately after the baby is born.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "compulsory 2 weeks (4 in a factory)"
   },
   {
     "config_id": "A",
@@ -583,9 +583,9 @@
     "reference": "Earliest: the start of week 29 of the pregnancy (unless the baby is born early). Latest: the due date. It can start on any day of the week.",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, the earliest you can plan to start your maternity leave is from the start of week 29 (unless your baby is born early), and the latest date you can plan to start your maternity leave is your due date.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "week 29 to the due date"
   },
   {
     "config_id": "A",
@@ -595,8 +595,8 @@
     "reference": "4 weeks (compared with 2 weeks for other workplaces).",
     "grading_rule": "facts stated, not completeness",
     "answer": "Based on the provided documents, if you work in a factory, you must take 4 weeks of leave after your baby is born.",
-    "human_verdict": "",
-    "labeller": "",
-    "note": ""
+    "human_verdict": "CORRECT",
+    "labeller": "Sandesh Jung Kunwar",
+    "note": "4 weeks"
   }
 ]
