@@ -36,6 +36,7 @@ from refuses_to_lie.answering import answer_question
 from refuses_to_lie.config import ALL_CONFIGS, LADDER, RunConfig
 from refuses_to_lie.corpus import Chunk, chunk_document, load_all_pages
 from refuses_to_lie.grid import (
+    PARSER_VERSION,
     cache_key,
     config_fingerprint,
     load_completed,
@@ -80,6 +81,7 @@ def run_one(
         "category": question["category"],
         "config_id": config.id,
         "config_fingerprint": config_fingerprint(config),
+        "parser_version": PARSER_VERSION,
         "expected_answerable": question["expected_answerable"],
         "corpus_includes_injected": includes_injected,
     }
@@ -129,6 +131,12 @@ def main() -> None:
         help="restrict to one eval category, e.g. prompt_injection",
     )
     parser.add_argument("--configs", default="", help="comma-separated rung ids, e.g. A,B")
+    parser.add_argument(
+        "--max-consecutive-failures",
+        type=int,
+        default=0,
+        help="stop after this many failed rows in a row (0 = never stop early)",
+    )
     parser.add_argument("--results", type=Path, default=DEFAULT_RESULTS)
     parser.add_argument(
         "--no-injected",
@@ -169,7 +177,9 @@ def main() -> None:
     )
 
     args.results.parent.mkdir(parents=True, exist_ok=True)
-    completed = load_completed(args.results)
+    completed = load_completed(
+        args.results, frozenset(c.id for c in ALL_CONFIGS if c.require_citations)
+    )
 
     todo = pending_work(questions, configs, completed, include_injected)
     total = len(questions) * len(configs)
@@ -180,6 +190,8 @@ def main() -> None:
     )
 
     failures = 0
+    streak = 0
+    stopped_early = False
     with args.results.open("a") as out:
         for i, (question, config) in enumerate(todo, start=1):
             row = run_one(question, config, index, reranker, include_injected, trusted_docs)
@@ -188,16 +200,29 @@ def main() -> None:
 
             if "error" in row:
                 failures += 1
+                streak += 1
                 print(
                     f"[{i}/{len(todo)}] {config.id} {question['id']} FAILED {row['error']}",
                     flush=True,
                 )
-            elif i % 10 == 0 or i == len(todo):
-                print(f"[{i}/{len(todo)}] {config.id} {question['id']} ok", flush=True)
+            else:
+                streak = 0
+                if i % 10 == 0 or i == len(todo):
+                    print(f"[{i}/{len(todo)}] {config.id} {question['id']} ok", flush=True)
+
+            # A run of consecutive failures almost always means a provider's
+            # quota is gone. Every further row would spend minutes in retries
+            # and still fail, so stop and let the next attempt resume instead.
+            if args.max_consecutive_failures and streak >= args.max_consecutive_failures:
+                stopped_early = True
+                print(f"\nstopping early: {streak} consecutive failures", flush=True)
+                break
 
     print(f"\ndone: {len(todo) - failures} ok, {failures} failed")
-    if failures:
+    if failures or stopped_early:
         print("rerun the same command to retry only the failed rows", file=sys.stderr)
+        # Non-zero so a supervisor can tell "finished" from "needs another go".
+        sys.exit(1)
 
 
 if __name__ == "__main__":

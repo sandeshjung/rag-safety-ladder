@@ -71,3 +71,42 @@ def test_abstained_property():
 
     assert abstained.abstained is True
     assert answered.abstained is False
+
+
+# --- citation parser v2 ------------------------------------------------------
+
+
+def test_citation_ids_reads_gov_uk_ids_with_spaces_and_parentheses():
+    # Version 1 allowed only [\w.-] and silently dropped every one of these.
+    from refuses_to_lie.generation import citation_ids
+
+    text = "SSP is £123.25 a week [Print Statutory Sick Pay (SSP) - GOV.UK-0002]."
+    assert citation_ids(text) == ["Print Statutory Sick Pay (SSP) - GOV.UK-0002"]
+
+
+def test_citation_ids_splits_a_grouped_citation():
+    from refuses_to_lie.generation import citation_ids
+
+    text = "It is 52 weeks [UHN-PO-HR10-0017, Print Maternity pay and leave - GOV.UK-0003]."
+    assert citation_ids(text) == [
+        "UHN-PO-HR10-0017",
+        "Print Maternity pay and leave - GOV.UK-0003",
+    ]
+
+
+def test_citation_ids_ignores_brackets_that_are_not_citations():
+    from refuses_to_lie.generation import citation_ids
+
+    assert citation_ids("Band 5 [see note] and [2025] figures.") == []
+
+
+def test_extracted_citations_keep_only_ids_that_were_in_context():
+    from types import SimpleNamespace
+
+    from refuses_to_lie.generation import _extract_citations
+
+    hit = SimpleNamespace(chunk=SimpleNamespace(cite_label="SSP page"))
+    hits = {"Print Statutory Sick Pay (SSP) - GOV.UK-0002": hit}
+    text = "£123.25 [Print Statutory Sick Pay (SSP) - GOV.UK-0002, invented-doc-0009]."
+    cited = _extract_citations(text, hits)  # type: ignore[arg-type]
+    assert [c.chunk_id for c in cited] == ["Print Statutory Sick Pay (SSP) - GOV.UK-0002"]

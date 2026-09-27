@@ -179,6 +179,28 @@ def grade_row(row: dict, model: str) -> Grade:
     )
 
 
+def load_all_grades(path: Path, version: str = JUDGE_VERSION) -> list[Grade]:
+    """Every grade from one judge version, including superseded ones."""
+    if not path.exists():
+        return []
+    grades = [
+        Grade(**json.loads(line)) for line in path.read_text().splitlines() if line.strip()
+    ]
+    return [g for g in grades if g.judge_version == version]
+
+
+def grade_for(grades: dict[tuple[str, str], Grade], row: dict) -> Grade | None:
+    """The grade for this row's answer, or None if the text has changed since.
+
+    Grades are keyed by (config, question), but a row re-run under a fixed
+    parser can keep its key and change its text -- rung E drops a sentence
+    it now verifies. A grade of the old text would then be reported as a
+    grade of the new one.
+    """
+    grade = grades.get((row["config_id"], row["question_id"]))
+    return grade if grade is not None and grade.answer == row.get("answer") else None
+
+
 def load_grades(path: Path, version: str = JUDGE_VERSION) -> dict[tuple[str, str], Grade]:
     """Grades from one judge version, keyed by (config_id, question_id).
 

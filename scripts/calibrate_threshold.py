@@ -29,7 +29,7 @@ from refuses_to_lie.analysis import (
 )
 from refuses_to_lie.calibration import COMPONENTS, Scored, best_threshold, separation, sweep
 from refuses_to_lie.config import ALL_CONFIGS, F, RunConfig
-from refuses_to_lie.grading import load_grades
+from refuses_to_lie.grading import grade_for, load_grades
 
 ROOT = Path(__file__).resolve().parent.parent
 EVAL_FILE = ROOT / "eval" / "questions.json"
@@ -42,13 +42,14 @@ def load_scored(
     rows, _ = drop_stale(load_rows(results), ALL_CONFIGS)
     rows = attach_expectations(rows, questions)
 
-    grades = {key: g.verdict for key, g in load_grades(grades_path).items()}
+    grades = load_grades(grades_path)
 
     scored = []
     for row in rows:
         if row["config_id"] != rung.id or "error" in row or not row.get("confidence"):
             continue
-        verdict = grades.get((row["config_id"], row["question_id"]))
+        grade = grade_for(grades, row)
+        verdict = grade.verdict if grade else None
         # An answer to a question the corpus cannot support is wrong however
         # fluent it was, and it will never carry a grade -- there is no
         # reference to grade it against.

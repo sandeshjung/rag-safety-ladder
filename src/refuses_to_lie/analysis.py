@@ -38,7 +38,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from refuses_to_lie.config import RunConfig
-from refuses_to_lie.grid import config_fingerprint
+from refuses_to_lie.grid import config_fingerprint, is_current_parse
 
 INJECTION_DOC_PREFIX = "INJ-"
 
@@ -69,7 +69,13 @@ def drop_stale(rows: list[dict], configs: Sequence[RunConfig]) -> tuple[list[dic
     so a report can say out loud that it ignored some.
     """
     current = {c.id: config_fingerprint(c) for c in configs}
-    fresh = [r for r in rows if r.get("config_fingerprint") == current.get(r["config_id"])]
+    citing = frozenset(c.id for c in configs if c.require_citations)
+    fresh = [
+        r
+        for r in rows
+        if r.get("config_fingerprint") == current.get(r["config_id"])
+        and is_current_parse(r, citing)
+    ]
     return fresh, len(rows) - len(fresh)
 
 

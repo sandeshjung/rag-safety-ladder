@@ -122,3 +122,61 @@ def test_drop_unsupported_claims_strips_only_the_bad_sentence():
 
     assert "27 days" in result
     assert "no cap" not in result
+
+
+# --- citation parser v2 ------------------------------------------------------
+
+
+def test_claims_citing_gov_uk_pages_are_verified():
+    from refuses_to_lie.verifier import _split_claims
+
+    text = "You get £123.25 a week [Print Statutory Sick Pay (SSP) - GOV.UK-0002]."
+    assert _split_claims(text) == [(text, "Print Statutory Sick Pay (SSP) - GOV.UK-0002")]
+
+
+def test_a_sentence_citing_two_sources_is_checked_against_each():
+    from refuses_to_lie.verifier import _split_claims
+
+    text = "Leave is 52 weeks [doc-a-0001, doc-b-0002]."
+    assert _split_claims(text) == [(text, "doc-a-0001"), (text, "doc-b-0002")]
+
+
+def test_a_decimal_is_not_a_sentence_boundary():
+    from refuses_to_lie.verifier import _split_claims
+
+    text = "The rate is £116.75 per week [doc-0001]. It is paid weekly [doc-0002]."
+    claims = _split_claims(text)
+    assert claims[0] == ("The rate is £116.75 per week [doc-0001].", "doc-0001")
+    assert claims[1] == ("It is paid weekly [doc-0002].", "doc-0002")
+
+
+def test_a_citation_after_the_full_stop_belongs_to_the_sentence_before():
+    from refuses_to_lie.verifier import _split_claims
+
+    text = "Probation lasts six months. [doc-0001]"
+    assert _split_claims(text) == [("Probation lasts six months.", "doc-0001")]
+
+
+def test_cached_verdicts_are_reused_only_for_the_same_claim_text():
+    # Version 1 keyed verdicts by position. Once more claims are found the
+    # positions shift, and a positional key would replay one claim's verdict
+    # for another.
+    from refuses_to_lie.verifier import _cache_key
+
+    legacy = {("Old claim [doc-0001].", "doc-0001"): 0}
+    assert _cache_key("p", "Old claim [doc-0001].", "doc-0001", legacy) == "p-claim0"
+    new = _cache_key("p", "New claim [doc-0002].", "doc-0002", legacy)
+    assert new.startswith("p-c") and new != "p-claim0"
+    assert new != _cache_key("p", "New claim [doc-0002].", "doc-0003", legacy)
+
+
+def test_a_sentence_supported_by_one_of_its_sources_is_kept():
+    text = "Leave is 52 weeks [doc-a-0001, doc-b-0002]."
+    verified = VerifiedAnswer(
+        answer=GeneratedAnswer(question="q", text=text, citations=[], context_chunk_ids=[]),
+        claim_verdicts=[
+            ClaimVerdict(text, "doc-a-0001", "SUPPORTED"),
+            ClaimVerdict(text, "doc-b-0002", "UNSUPPORTED"),
+        ],
+    )
+    assert drop_unsupported_claims(verified) == text

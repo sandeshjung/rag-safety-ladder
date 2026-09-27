@@ -18,7 +18,26 @@ from refuses_to_lie.config import RunConfig
 from refuses_to_lie.llm_client import call_gemini
 from refuses_to_lie.retrieval import Hit
 
-_CITATION_RE = re.compile(r"\[([\w.\-]+-\d{4})\]")
+# A bracket holding one or more chunk ids, comma-separated. Ids are matched
+# loosely on purpose: GOV.UK doc ids carry spaces and parentheses
+# ("Print Statutory Sick Pay (SSP) - GOV.UK-0001"), and the model often
+# groups sources as "[id-0001, id-0002]". Version 1 of this parser allowed
+# only [\w.-] and one id per bracket, so every GOV.UK citation and every
+# grouped one was silently dropped -- unverified at rung E and invisible to
+# the confidence score. Whatever is extracted is still checked against the
+# ids actually in context before it counts.
+_CITATION_BLOCK_RE = re.compile(r"\[([^\[\]]*?-\d{4}(?:\s*,\s*[^\[\]]*?-\d{4})*)\]")
+
+
+def citation_ids(text: str) -> list[str]:
+    """Every chunk id cited in `text`, in order, duplicates kept."""
+    return [
+        part.strip()
+        for block in _CITATION_BLOCK_RE.findall(text)
+        for part in block.split(",")
+        if part.strip()
+    ]
+
 
 ABSTAIN_PHRASE = "I don't have enough information in the provided documents to answer this."
 
@@ -80,7 +99,7 @@ def format_excerpts(hits: list[Hit]) -> str:
 
 def _extract_citations(text: str, hits_by_id: dict[str, Hit]) -> list[Citation]:
     seen: list[str] = []
-    for chunk_id in _CITATION_RE.findall(text):
+    for chunk_id in citation_ids(text):
         if chunk_id in hits_by_id and chunk_id not in seen:
             seen.append(chunk_id)
     return [

@@ -272,3 +272,22 @@ def test_false_premise_questions_are_not_counted_as_must_refuse():
     score = score_config(rows)
     assert score.n_should_abstain == 1
     assert score.error_floor == 0.0
+
+
+def test_drop_stale_drops_citing_rows_from_the_old_parser():
+    from refuses_to_lie.config import A, D
+    from refuses_to_lie.grid import PARSER_VERSION, config_fingerprint
+
+    rows = [
+        _row("Q1", config_id="A", config_fingerprint=config_fingerprint(A)),
+        _row("Q2", config_id="D", config_fingerprint=config_fingerprint(D)),
+        _row(
+            "Q3",
+            config_id="D",
+            config_fingerprint=config_fingerprint(D),
+            parser_version=PARSER_VERSION,
+        ),
+    ]
+    fresh, dropped = drop_stale(rows, [A, D])
+    assert [r["question_id"] for r in fresh] == ["Q1", "Q3"]
+    assert dropped == 1

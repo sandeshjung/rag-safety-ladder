@@ -186,3 +186,13 @@ def test_a_regrade_supersedes_the_earlier_grade_of_the_same_row(tmp_path):
         + json.dumps({**base, "verdict": "CORRECT"})
     )
     assert load_grades(path)[("A", "Q1")].verdict == "CORRECT"
+
+
+def test_a_grade_does_not_carry_over_to_changed_answer_text():
+    # A re-run can keep a row's (config, question) key and change its text;
+    # the old grade must not be reported as a grade of the new answer.
+    from refuses_to_lie.grading import grade_for
+
+    grades = {("E", "AS-001"): Grade("AS-001", "E", "CORRECT", "old text")}
+    assert grade_for(grades, _row(config_id="E", answer="old text")).verdict == "CORRECT"
+    assert grade_for(grades, _row(config_id="E", answer="new text")) is None

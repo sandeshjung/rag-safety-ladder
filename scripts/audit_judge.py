@@ -31,7 +31,7 @@ from pathlib import Path
 
 from refuses_to_lie.analysis import attach_expectations, drop_stale, load_rows
 from refuses_to_lie.config import ALL_CONFIGS
-from refuses_to_lie.grading import JUDGE_VERSION, gradeable, load_grades
+from refuses_to_lie.grading import JUDGE_VERSION, gradeable, load_all_grades
 
 ROOT = Path(__file__).resolve().parent.parent
 EVAL_FILE = ROOT / "eval" / "questions.json"
@@ -104,12 +104,15 @@ def score() -> None:
     if not SHEET.exists():
         raise SystemExit("no sheet yet - run `sample` first")
     labelled = [e for e in json.loads(SHEET.read_text()) if e["human_verdict"] in VERDICTS]
-    grades = load_grades(GRADES)
+    # Matched on the exact text the labeller read. If a row has since been
+    # re-run and its answer changed, the judge's grade of the labelled text
+    # is still the right comparison -- it is the same answer both saw.
+    by_text = {(g.config_id, g.question_id, g.answer): g for g in load_all_grades(GRADES)}
 
     groups: dict[str, list[tuple[str, str]]] = defaultdict(list)
     missing = 0
     for entry in labelled:
-        grade = grades.get((entry["config_id"], entry["question_id"]))
+        grade = by_text.get((entry["config_id"], entry["question_id"], entry["answer"]))
         if grade is None:
             missing += 1
             continue

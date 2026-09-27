@@ -57,7 +57,7 @@ B = replace(A, id="B", label="+ hybrid retrieval (BM25 + dense, RRF)", retrieval
 C = replace(B, id="C", label="+ cross-encoder reranker", rerank=True)
 D = replace(C, id="D", label="+ mandatory inline citations", require_citations=True)
 E = replace(D, id="E", label="+ groundedness verifier", verifier="drop_unsupported")
-F = replace(E, id="F", label="+ calibrated abstention (full system)", abstain=True)
+F = replace(E, id="F", label="+ threshold abstention (full system)", abstain=True)
 
 LADDER = (A, B, C, D, E, F)
 

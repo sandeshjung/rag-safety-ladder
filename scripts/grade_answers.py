@@ -15,6 +15,8 @@ grading calls took out a rung E row mid-run.
 Usage:
   uv run python scripts/grade_answers.py --results results/clean.jsonl
   uv run python scripts/grade_answers.py --configs A,F
+  uv run python scripts/grade_answers.py --results results/frontier-injection.jsonl \
+      --include-external
 """
 
 from __future__ import annotations
@@ -35,6 +37,7 @@ from refuses_to_lie.grading import (
     JUDGE_VERSION,
     Grade,
     accuracy,
+    grade_for,
     grade_row,
     gradeable,
     load_grades,
@@ -43,6 +46,7 @@ from refuses_to_lie.grading import (
 ROOT = Path(__file__).resolve().parent.parent
 EVAL_FILE = ROOT / "eval" / "questions.json"
 DEFAULT_RESULTS = ROOT / "results" / "clean.jsonl"
+AUDIT_SHEET = ROOT / "eval" / "judge_audit.json"
 
 
 def main() -> None:
@@ -51,29 +55,56 @@ def main() -> None:
     parser.add_argument("--grades", type=Path, default=None)
     parser.add_argument("--configs", default="", help="comma-separated rung ids")
     parser.add_argument("--model", default=A.verifier_model)
+    parser.add_argument(
+        "--audit",
+        action="store_true",
+        help="grade only the rows in eval/judge_audit.json, so the judge check comes first",
+    )
+    parser.add_argument(
+        "--include-external",
+        action="store_true",
+        help="also grade rows from outside the ladder (fingerprint starting 'external:')",
+    )
     args = parser.parse_args()
 
     grades_path = args.grades or args.results.with_name(args.results.stem + "-grades.jsonl")
 
-    rows, _ = drop_stale(load_rows(args.results), ALL_CONFIGS)
+    loaded = load_rows(args.results)
+    rows, _ = drop_stale(loaded, ALL_CONFIGS)
+    if args.include_external:
+        # Rows produced outside the ladder (another generator fed the same
+        # prompts) carry an "external:" fingerprint. They are opt-in so a
+        # ladder report can never average them in by accident.
+        rows += [
+            r for r in loaded if str(r.get("config_fingerprint", "")).startswith("external:")
+        ]
     rows = attach_expectations(rows, json.loads(EVAL_FILE.read_text()))
     if args.configs:
         wanted = {c.strip().upper() for c in args.configs.split(",")}
         rows = [r for r in rows if r["config_id"] in wanted]
 
+    if args.audit:
+        sheet = json.loads(AUDIT_SHEET.read_text())
+        audited = {(e["config_id"], e["question_id"]) for e in sheet}
+        rows = [r for r in rows if (r["config_id"], r["question_id"]) in audited]
+
     to_grade = [r for r in rows if gradeable(r)]
     # Only this judge version counts as done: a rubric change regrades.
+    # A grade counts only for the exact text it graded, so an answer that
+    # changed on a re-run is graded again. Unchanged text costs nothing: the
+    # judge's cache is keyed by the answer's digest.
     existing = load_grades(grades_path)
-    pending = [r for r in to_grade if (r["config_id"], r["question_id"]) not in existing]
+    current = [grade_for(existing, r) for r in to_grade]
+    grades = [g for g in current if g is not None]
+    pending = [r for r, g in zip(to_grade, current, strict=True) if g is None]
 
     print(
         f"{len(rows)} rows | {len(to_grade)} gradeable "
         f"(answered, answerable, has reference)\n"
-        f"judge {JUDGE_VERSION}: {len(existing)} already graded, "
+        f"judge {JUDGE_VERSION}: {len(grades)} already graded, "
         f"{len(pending)} to grade -> {grades_path}\n"
     )
 
-    grades = list(existing.values())
     grades_path.parent.mkdir(parents=True, exist_ok=True)
     with grades_path.open("a") as out:
         for i, row in enumerate(pending, start=1):

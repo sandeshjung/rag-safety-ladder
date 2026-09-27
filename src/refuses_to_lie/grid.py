@@ -35,6 +35,23 @@ NON_SUBSTANTIVE_FIELDS = frozenset({"label"})
 # is, by definition, the behaviour the old rows already ran.
 ADDED_LATER_FIELDS = frozenset({"confidence_source", "require_provenance"})
 
+# Version of the citation parser (generation.citation_ids and the verifier's
+# claim splitter), recorded on every row. Version 1 dropped every citation
+# to a GOV.UK page and every grouped citation, so on the rungs that cite,
+# its rows measured a half-working verifier and confidence score. Those
+# rows are neither done nor scored. It is not part of the fingerprint on
+# purpose: the fingerprint is also the LLM cache key, and keeping it lets a
+# re-run reuse the cached drafts, so the parser is the only thing that
+# changes between the old rows and the new.
+PARSER_VERSION = 2
+
+
+def is_current_parse(row: dict, citing_config_ids: frozenset[str]) -> bool:
+    """False for a citing rung's row parsed by an older citation parser."""
+    if row["config_id"] not in citing_config_ids:
+        return True
+    return row.get("parser_version", 1) >= PARSER_VERSION
+
 
 def config_fingerprint(config: RunConfig) -> str:
     """Short hash over everything about a config that could change output."""
@@ -69,11 +86,14 @@ def cache_key(config: RunConfig, question_id: str, includes_injected: bool = Tru
 Completion = tuple[str, str, str, str]
 
 
-def load_completed(path: Path) -> set[Completion]:
+def load_completed(
+    path: Path, citing_config_ids: frozenset[str] = frozenset()
+) -> set[Completion]:
     """(config_id, question_id, fingerprint, corpus) rows that succeeded.
 
     Failed rows stay in the file as a record of what went wrong but are not
     treated as done, so rerunning the same command retries exactly them.
+    So do rows from `citing_config_ids` written by an older citation parser.
     """
     if not path.exists():
         return set()
@@ -82,7 +102,7 @@ def load_completed(path: Path) -> set[Completion]:
         if not line.strip():
             continue
         row = json.loads(line)
-        if "error" in row:
+        if "error" in row or not is_current_parse(row, citing_config_ids):
             continue
         done.add(
             (

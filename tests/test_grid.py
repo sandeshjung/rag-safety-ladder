@@ -20,12 +20,14 @@ def _row(
     fingerprint: str,
     error: str | None = None,
     includes_injected: bool = True,
+    **extra: object,
 ) -> str:
     row = {
         "config_id": config_id,
         "question_id": question_id,
         "config_fingerprint": fingerprint,
         "corpus_includes_injected": includes_injected,
+        **extra,
     }
     if error:
         row["error"] = error
@@ -176,3 +178,25 @@ def test_extension_rungs_do_not_collide_with_the_ladder():
 
     prints = [config_fingerprint(c) for c in ALL_CONFIGS]
     assert len(set(prints)) == len(prints)
+
+
+def test_citing_rows_from_the_old_parser_are_not_done(tmp_path: Path):
+    # Parser v1 dropped GOV.UK and grouped citations, so its rows on citing
+    # rungs must be re-run; rungs that never cite are unaffected.
+    from refuses_to_lie.config import D
+    from refuses_to_lie.grid import PARSER_VERSION
+
+    path = tmp_path / "grid.jsonl"
+    fp_a, fp_d = config_fingerprint(A), config_fingerprint(D)
+    path.write_text(
+        _row("A", "AS-001", fp_a)
+        + "\n"
+        + _row("D", "AS-001", fp_d)
+        + "\n"
+        + _row("D", "AS-002", fp_d, parser_version=PARSER_VERSION)
+        + "\n"
+    )
+    done = load_completed(path, frozenset({"D"}))
+    assert ("A", "AS-001", fp_a, "inj") in done
+    assert ("D", "AS-001", fp_d, "inj") not in done
+    assert ("D", "AS-002", fp_d, "inj") in done
