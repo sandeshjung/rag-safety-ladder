@@ -189,6 +189,7 @@ def main() -> None:
         f"{total - len(todo)} already done, {len(todo)} to run -> {args.results}\n"
     )
 
+    ran = 0
     failures = 0
     streak = 0
     stopped_early = False
@@ -197,6 +198,7 @@ def main() -> None:
             row = run_one(question, config, index, reranker, include_injected, trusted_docs)
             out.write(json.dumps(row) + "\n")
             out.flush()  # one row at a time: a kill -9 loses nothing already written
+            ran += 1
 
             if "error" in row:
                 failures += 1
@@ -218,9 +220,9 @@ def main() -> None:
                 print(f"\nstopping early: {streak} consecutive failures", flush=True)
                 break
 
-    print(f"\ndone: {len(todo) - failures} ok, {failures} failed")
+    print(f"\ndone: {ran - failures} ok, {failures} failed, {len(todo) - ran} not run")
     if failures or stopped_early:
-        print("rerun the same command to retry only the failed rows", file=sys.stderr)
+        print("rerun the same command to retry the failed and unrun rows", file=sys.stderr)
         # Non-zero so a supervisor can tell "finished" from "needs another go".
         sys.exit(1)
 
