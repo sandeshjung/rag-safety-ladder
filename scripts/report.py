@@ -174,7 +174,12 @@ def injection(
 
 
 def frontier(rows: list[dict], grades: dict[tuple[str, str], Grade], base: str) -> str:
-    """The recorded rung beside an external generator given its exact prompts."""
+    """The recorded rung beside an external generator given its exact prompts.
+
+    Refusals are split by whether refusing was right, because the two mean
+    opposite things: refusing a must-refuse question is the pass, refusing
+    an answerable one is lost coverage.
+    """
     external = [r for r in rows if str(r.get("config_fingerprint", "")).startswith(EXTERNAL)]
     if not external:
         return "_no external rows_"
@@ -185,19 +190,27 @@ def frontier(rows: list[dict], grades: dict[tuple[str, str], Grade], base: str) 
         (external[0]["config_id"], external),
     ):
         given = [r for r in group if answered(r)]
-        refuse = [r for r in group if not r["expected_answerable"]]
+        refuse = [r for r in group if must_refuse(r)]
+        answerable = [r for r in group if not must_refuse(r)]
         body.append(
             [
                 label,
                 str(len(group)),
-                str(len(group) - len(given)),
+                f"{sum(1 for r in answerable if not answered(r))}/{len(answerable)}",
                 f"{sum(1 for r in refuse if answered(r))}/{len(refuse)}",
                 str(sum(1 for r in given if cites_injection(r))),
                 accuracy_cell(group, grades),
             ]
         )
     return table(
-        ["generator", "rows", "refused", "answered a must-refuse", "cited a fake", "accuracy"],
+        [
+            "generator",
+            "rows",
+            "refused an answerable question",
+            "answered a must-refuse question",
+            "cited a fake",
+            "accuracy",
+        ],
         body,
     )
 
@@ -232,6 +245,53 @@ def confidence(rows: list[dict], grades: dict[tuple[str, str], Grade], rung: str
         if r is not None:
             body.append([component, f"{r:+.3f}", str(len(present))])
     return table(["component", "correlation with correct", "n"], body) if body else "_no data_"
+
+
+def gate_outcomes(rows: list[dict], grades: dict[tuple[str, str], Grade], rung: str) -> str:
+    """What happened at each answerability score, for a gated rung.
+
+    A correlation says nothing here: the gate only lets 1.0 through, so
+    every answer it allows carries the same score. What matters is how the
+    questions landed at each score -- which it stopped, which it let
+    through, and whether those were right.
+    """
+    gated = [
+        r
+        for r in rows
+        if r["config_id"] == rung
+        and "error" not in r
+        and "answerability" in (r.get("confidence") or {})
+    ]
+    if not gated:
+        return "_no data_"
+    body = []
+    for score in sorted({r["confidence"]["answerability"] for r in gated}, reverse=True):
+        group = [r for r in gated if r["confidence"]["answerability"] == score]
+        given = [r for r in group if answered(r)]
+        graded = [g for g in (grade_for(grades, r) for r in given) if g is not None]
+        body.append(
+            [
+                f"{score:.1f}",
+                str(len(group)),
+                str(sum(1 for r in group if must_refuse(r))),
+                str(len(given)),
+                str(sum(1 for r in given if must_refuse(r))),
+                str(sum(1 for g in graded if g.verdict == "CORRECT")),
+                str(sum(1 for g in graded if g.is_wrong)),
+            ]
+        )
+    return table(
+        [
+            "answerability",
+            "questions",
+            "of them must-refuse",
+            "answered",
+            "answered a must-refuse",
+            "graded correct",
+            "graded wrong",
+        ],
+        body,
+    )
 
 
 def why_wrong(rows: list[dict], grades: dict[tuple[str, str], Grade]) -> str:
@@ -302,8 +362,8 @@ def build() -> str:
             lambda: confidence(inj, inj_grades, "F"),
         ),
         section(
-            "4c. Confidence vs correctness, rung G, clean",
-            lambda: confidence(clean, clean_grades, "G"),
+            "4c. Answerability gate decisions, rung G, clean",
+            lambda: gate_outcomes(clean, clean_grades, "G"),
         ),
         section(
             "5. Why answers were wrong (clean, all rungs)",
