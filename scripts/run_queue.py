@@ -115,7 +115,11 @@ def run_stage(name: str, command: list[str]) -> bool:
     for attempt in range(1, MAX_ATTEMPTS + 1):
         log(f"START  {name}  (attempt {attempt})")
         with LOG.open("a") as out:
-            _child = subprocess.Popen(command, cwd=ROOT, env=env, stdout=out, stderr=out)
+            # stdin from /dev/null: once the launching terminal closes, an
+            # inherited stdin is revoked and every child dies at startup.
+            _child = subprocess.Popen(
+                command, cwd=ROOT, env=env, stdin=subprocess.DEVNULL, stdout=out, stderr=out
+            )
             code = _child.wait()
         _child = None
         if code == 0:
