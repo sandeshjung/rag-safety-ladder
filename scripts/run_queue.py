@@ -76,6 +76,26 @@ STAGES: list[tuple[str, list[str]]] = [
     ("run clean G (40 slice)", [*GRID, "--sample", "40", *CLEAN, "--configs", "G"]),
     ("run clean G (120 slice)", [*GRID, "--sample", "120", *CLEAN, "--configs", "G"]),
     ("grade clean G (judge v2)", [*GRADE, "--configs", "G"]),
+    # Rung I, prefer current documents. Planted documents first: 25
+    # questions, so a full answer on whether it holds up under attack
+    # arrives before the long clean run.
+    ("run injection I", [*GRID, *INJECTION, "--configs", "I"]),
+    (
+        "grade injection I (judge v2)",
+        [*GRADE, "--results", "results/injection.jsonl", "--configs", "I"],
+    ),
+    ("run clean I (40 slice)", [*GRID, "--sample", "40", *CLEAN, "--configs", "I"]),
+    ("run clean I (120 slice)", [*GRID, "--sample", "120", *CLEAN, "--configs", "I"]),
+    ("grade clean I (judge v2)", [*GRADE, "--configs", "I"]),
+    # Rung J, rung I with ten passages instead of six: same order as I.
+    ("run injection J", [*GRID, *INJECTION, "--configs", "J"]),
+    (
+        "grade injection J (judge v2)",
+        [*GRADE, "--results", "results/injection.jsonl", "--configs", "J"],
+    ),
+    ("run clean J (40 slice)", [*GRID, "--sample", "40", *CLEAN, "--configs", "J"]),
+    ("run clean J (120 slice)", [*GRID, "--sample", "120", *CLEAN, "--configs", "J"]),
+    ("grade clean J (judge v2)", [*GRADE, "--configs", "J"]),
 ]
 
 _child: subprocess.Popen[bytes] | None = None

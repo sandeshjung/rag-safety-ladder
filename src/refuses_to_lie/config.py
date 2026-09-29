@@ -50,6 +50,9 @@ class RunConfig:
     # Injection won by source capture, not instruction-following, so the
     # defence is to stop unregistered documents reaching the context at all.
     require_provenance: bool = False
+    # A quarter of the clean grid's wrong answers cited a genuine but
+    # superseded document. Drop those whenever their replacement is present.
+    exclude_superseded: bool = False
 
 
 A = RunConfig(id="A", label="dense retrieval only, no abstention")
@@ -63,7 +66,7 @@ LADDER = (A, B, C, D, E, F)
 
 # Rungs built from what the A-F grid measured. Kept out of LADDER so the
 # published ladder -- and every command that runs it by default -- is
-# unchanged; run them explicitly with --configs G,H.
+# unchanged; run them explicitly with --configs G,H,I,J.
 G = replace(
     F,
     id="G",
@@ -74,6 +77,12 @@ G = replace(
     abstain_threshold=0.75,
 )
 H = replace(G, id="H", label="+ provenance register", require_provenance=True)
+# The rung ids are the ladder letters; "I" is the ninth, not an ambiguous name.
+I = replace(H, id="I", label="+ prefer current documents", exclude_superseded=True)  # noqa: E741
+# With superseded copies gone, the six-passage cut was the next limit: the
+# answer passage usually ranked 7th to 16th. Measured without an LLM, ten
+# passages lift passage recall from 78% to 87% on the answerable questions.
+J = replace(I, id="J", label="+ ten passages instead of six", top_k_context=10)
 
-EXTENSIONS = (G, H)
+EXTENSIONS = (G, H, I, J)
 ALL_CONFIGS = LADDER + EXTENSIONS

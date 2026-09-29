@@ -20,6 +20,8 @@ and two extension rungs, built from what the A-F grid measured:
 
     G  abstention gated on answerability instead of the composite
     H  + only registered documents may reach the context
+    I  + a superseded document is dropped when its replacement is present
+    J  + ten passages in the context instead of six
 
 Because the rungs are cumulative, a config is a set of flags rather than a
 branch, and adding a rung means adding a stage here rather than forking
@@ -81,6 +83,7 @@ def retrieve_context(
     config: RunConfig,
     reranker: Reranker | None = None,
     trusted_docs: frozenset[str] | None = None,
+    superseded_docs: frozenset[str] | None = None,
 ) -> list[Hit]:
     """Rungs A-C: retrieve a wide shortlist, optionally rerank it, then
     narrow to the excerpts that actually go in the prompt.
@@ -107,6 +110,13 @@ def retrieve_context(
         # Filter before narrowing, so the context backfills from the wider
         # shortlist with registered documents instead of just shrinking.
         hits = [h for h in hits if h.chunk.doc_id in trusted_docs]
+
+    if config.exclude_superseded:
+        if superseded_docs is None:
+            raise ValueError("exclude_superseded=True needs superseded_docs from the versions")
+        # Same place and reason as provenance: the current version's chunks
+        # backfill from the shortlist rather than the context shrinking.
+        hits = [h for h in hits if h.chunk.doc_id not in superseded_docs]
 
     return hits[: config.top_k_context]
 
@@ -149,6 +159,7 @@ def answer_question(
     cache_key: str | None = None,
     reranker: Reranker | None = None,
     trusted_docs: frozenset[str] | None = None,
+    superseded_docs: frozenset[str] | None = None,
 ) -> Answer:
     uses_composite = config.abstain and config.confidence_source == "composite"
     if uses_composite and config.verifier == "off":
@@ -159,7 +170,12 @@ def answer_question(
         )
 
     hits = retrieve_context(
-        index, question, config, reranker=reranker, trusted_docs=trusted_docs
+        index,
+        question,
+        config,
+        reranker=reranker,
+        trusted_docs=trusted_docs,
+        superseded_docs=superseded_docs,
     )
     if not hits:
         # Provenance can empty the context entirely. Nothing trustworthy to

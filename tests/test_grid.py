@@ -160,14 +160,25 @@ def test_existing_ladder_fingerprints_are_unchanged():
         assert config_fingerprint(config) == RECORDED_FINGERPRINTS[config.id], config.id
 
 
+def test_extension_fingerprints_are_unchanged():
+    # Same protection for the rungs added after the ladder: a new field must
+    # not mark G's and H's completed rows stale.
+    from refuses_to_lie.config import G, H
+
+    assert config_fingerprint(G) == "53260558c5"
+    assert config_fingerprint(H) == "47f1b2ce91"
+
+
 def test_a_later_field_at_its_default_does_not_move_the_fingerprint():
     # The whole point of ADDED_LATER_FIELDS: a capability the old rows never
     # used must not invalidate them just by existing.
     assert config_fingerprint(replace(A, require_provenance=False)) == config_fingerprint(A)
+    assert config_fingerprint(replace(A, exclude_superseded=False)) == config_fingerprint(A)
 
 
 def test_a_later_field_turned_on_does_move_the_fingerprint():
     assert config_fingerprint(replace(A, require_provenance=True)) != config_fingerprint(A)
+    assert config_fingerprint(replace(A, exclude_superseded=True)) != config_fingerprint(A)
     assert config_fingerprint(replace(A, confidence_source="answerability")) != (
         config_fingerprint(A)
     )

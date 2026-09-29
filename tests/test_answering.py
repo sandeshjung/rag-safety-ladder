@@ -202,3 +202,48 @@ def test_extension_rungs_build_on_the_full_system():
     assert G.confidence_source == "answerability" and G.abstain
     assert H.require_provenance and H.confidence_source == "answerability"
     assert not F.require_provenance and F.confidence_source == "composite"
+
+
+def test_superseded_filter_drops_old_versions_and_backfills(index: Index):
+    from dataclasses import replace
+
+    open_hits = retrieve_context(index, "career break eligibility", B)
+    stale = frozenset({"a36"})
+    filtered = retrieve_context(
+        index,
+        "career break eligibility",
+        replace(B, exclude_superseded=True),
+        superseded_docs=stale,
+    )
+    assert open_hits and not filtered  # the only document here is marked stale
+    kept = retrieve_context(
+        index,
+        "career break eligibility",
+        replace(B, exclude_superseded=True),
+        superseded_docs=frozenset({"some-other-doc"}),
+    )
+    assert [h.chunk.chunk_id for h in kept] == [h.chunk.chunk_id for h in open_hits]
+
+
+def test_superseded_filter_without_a_version_record_refuses_to_run(index: Index):
+    from dataclasses import replace
+
+    with pytest.raises(ValueError, match="superseded_docs"):
+        retrieve_context(index, "anything", replace(B, exclude_superseded=True))
+
+
+def test_prefer_current_rung_builds_on_provenance():
+    from refuses_to_lie.config import H, I
+
+    assert I.exclude_superseded and I.require_provenance
+    assert not H.exclude_superseded
+
+
+def test_wider_context_rung_changes_only_the_context_size():
+    from dataclasses import fields
+
+    from refuses_to_lie.config import I, J
+
+    changed = {f.name for f in fields(I) if getattr(I, f.name) != getattr(J, f.name)}
+    assert changed == {"id", "label", "top_k_context"}
+    assert J.top_k_context > I.top_k_context

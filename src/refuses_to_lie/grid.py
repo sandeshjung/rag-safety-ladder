@@ -33,7 +33,9 @@ NON_SUBSTANTIVE_FIELDS = frozenset({"label"})
 # thrown away for a feature those rows never used. So a field listed here
 # enters the hash only when set away from its default; at its default it
 # is, by definition, the behaviour the old rows already ran.
-ADDED_LATER_FIELDS = frozenset({"confidence_source", "require_provenance"})
+ADDED_LATER_FIELDS = frozenset(
+    {"confidence_source", "require_provenance", "exclude_superseded"}
+)
 
 # Version of the citation parser (generation.citation_ids and the verifier's
 # claim splitter), recorded on every row. Version 1 dropped every citation

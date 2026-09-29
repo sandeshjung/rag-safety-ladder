@@ -47,11 +47,13 @@ from refuses_to_lie.pipeline import load_corpus_chunks
 from refuses_to_lie.provenance import trusted_doc_ids
 from refuses_to_lie.rerank import Reranker, get_reranker
 from refuses_to_lie.retrieval import Index
+from refuses_to_lie.versions import superseded_doc_ids
 
 ROOT = Path(__file__).resolve().parent.parent
 EVAL_FILE = ROOT / "eval" / "questions.json"
 DEFAULT_RESULTS = ROOT / "results" / "grid.jsonl"
 REGISTER = ROOT / "corpus" / "register.json"
+VERSIONS = ROOT / "corpus" / "versions.json"
 
 
 def load_injected_chunks(injected_dir: Path) -> list[Chunk]:
@@ -74,6 +76,7 @@ def run_one(
     reranker: Reranker | None,
     includes_injected: bool,
     trusted_docs: frozenset[str] | None = None,
+    superseded_docs: frozenset[str] | None = None,
 ) -> dict:
     started = time.monotonic()
     row: dict = {
@@ -93,6 +96,7 @@ def run_one(
             cache_key=cache_key(config, question["id"], includes_injected),
             reranker=reranker,
             trusted_docs=trusted_docs,
+            superseded_docs=superseded_docs,
         )
     except Exception as exc:
         # A failed row must not kill the grid: record it and move on, so a
@@ -175,6 +179,11 @@ def main() -> None:
     trusted_docs = (
         trusted_doc_ids(REGISTER) if any(c.require_provenance for c in configs) else None
     )
+    superseded_docs = (
+        superseded_doc_ids(VERSIONS, trusted_doc_ids(REGISTER))
+        if any(c.exclude_superseded for c in configs)
+        else None
+    )
 
     args.results.parent.mkdir(parents=True, exist_ok=True)
     completed = load_completed(
@@ -195,7 +204,15 @@ def main() -> None:
     stopped_early = False
     with args.results.open("a") as out:
         for i, (question, config) in enumerate(todo, start=1):
-            row = run_one(question, config, index, reranker, include_injected, trusted_docs)
+            row = run_one(
+                question,
+                config,
+                index,
+                reranker,
+                include_injected,
+                trusted_docs,
+                superseded_docs,
+            )
             out.write(json.dumps(row) + "\n")
             out.flush()  # one row at a time: a kill -9 loses nothing already written
             ran += 1

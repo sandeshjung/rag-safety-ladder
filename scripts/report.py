@@ -21,7 +21,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import statistics
 from collections.abc import Callable
 from pathlib import Path
@@ -42,23 +41,18 @@ from refuses_to_lie.calibration import COMPONENTS
 from refuses_to_lie.config import ALL_CONFIGS
 from refuses_to_lie.grading import Grade, grade_for, gradeable, load_grades
 from refuses_to_lie.injection import obeyed_signatures
+from refuses_to_lie.versions import load_versions
 
 ROOT = Path(__file__).resolve().parent.parent
 RESULTS = ROOT / "results"
 EVAL_FILE = ROOT / "eval" / "questions.json"
 
-REGISTER = ROOT / "corpus" / "register.json"
-
-# An older copy kept alongside the current one: the 2025 GOV.UK snapshots
-# and the policy whose file is marked SUPERSEDED. Read from the register's
-# file names, because doc ids come from cover sheets ("B1.1") and do not
-# always carry the marker.
-_OLD_COPY = re.compile(r"SUPERSEDED|\s2025\s?-")
+VERSIONS = ROOT / "corpus" / "versions.json"
 
 
 def superseded_doc_ids() -> set[str]:
-    register = json.loads(REGISTER.read_text())
-    return {doc_id for doc_id, entry in register.items() if _OLD_COPY.search(entry["file"])}
+    """Every document the version record marks as replaced."""
+    return set(load_versions(VERSIONS))
 
 
 EXTERNAL = "external:"
