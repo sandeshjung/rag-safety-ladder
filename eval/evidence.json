@@ -1,0 +1,304 @@
+{
+  "_about": "Passage-level ground truth for the answerable questions in the clean grid. Each entry lists the verbatim passages an answer needs, one per required part (a part given as a list is satisfied by any one of its phrasings, where the document states the same fact twice); an excerpt counts as evidence if it contains a passage (whitespace-normalised). Quotes rather than excerpt ids, so the record survives a change of chunk size. Labeller: claude, reviewed against the corpus text; not independently checked.",
+  "AS-001": [
+    "must immediately inform the Identity",
+    "Services team on extension 2720"
+  ],
+  "AS-002": [
+    "An allowance equivalent to the balance of the annual leave entitlement on the date"
+  ],
+  "AS-006": [
+    "be classed as an employee",
+    "have done some work for your employer",
+    "have been ill for at least one full working day"
+  ],
+  "AS-008": [
+    "(or 4 weeks if you work in a factory)"
+  ],
+  "AS-010": [
+    "You must give your employer at least 8 weeks’ notice if you want to change"
+  ],
+  "AS-012": [
+    "earn on average at least £129 a week"
+  ],
+  "AS-013": [
+    [
+      "If they decide you’re not eligible, they must give you form SMP1 within 7",
+      "Your employer must give you form SMP1 explaining why you cannot get"
+    ]
+  ],
+  "AS-016": [
+    "The statutory weekly rate of Paternity Pay is £194.32, or 90% of your"
+  ],
+  "AS-018": [
+    [
+      "Your leave must end within 52 weeks of the child’s birth.",
+      "It must end within 52 weeks of the baby’s birth"
+    ]
+  ],
+  "AS-019": [
+    "You’re eligible for Paternity Leave from the first day of employment."
+  ],
+  "AS-021": [
+    "need to have been doing a job for 12 weeks before you qualify if you’re an"
+  ],
+  "AS-027": [
+    "Your employer will use your average weekly earnings over an 8-week period"
+  ],
+  "AS-028": [
+    "on or before the beginning of the 23rd week, if your SSP is expected to"
+  ],
+  "AS-033": [
+    "Your employer can ask you for more information within 14 days of you",
+    "You must give this information within 14 days of being asked for it."
+  ],
+  "AS-034": [
+    "Rate per week £3.65",
+    "Small Profits Threshold £7,105"
+  ],
+  "AS-037": [
+    "Upper Profits Limit £50,270",
+    "Rate above Upper Profits"
+  ],
+  "AS-039": [
+    "The earliest you can plan to start your maternity leave is from the start of week 29"
+  ],
+  "AS-040": [
+    "Have at least 12 months continuous",
+    "8 weeks at full pay"
+  ],
+  "AS-041": [
+    "If you are a Bank Worker who works regularly you may be entitled to statutory maternity"
+  ],
+  "AS-043": [
+    "If, however, your illness is pregnancy-related and you are within the 4 week period before"
+  ],
+  "AS-046": [
+    "You can take one weeks Neonatal Care Leave for each uninterrupted week (7 day period)",
+    "up to a maximum of 12 weeks"
+  ],
+  "AS-047": [
+    "If you are taking one weeks leave you must give at least 2 weeks’ notice before the first day"
+  ],
+  "AS-050": [
+    "If you are adopting you can start adoption leave anytime (and on any day of the week) from"
+  ],
+  "AS-052": [
+    "You can submit a maximum three separate notifications to book periods of leave, giving at"
+  ],
+  "AS-054": [
+    "Shared parental leave must be completed by your child’s first birthday or by one year"
+  ],
+  "AS-056": [
+    "If you have a fixed term or rotational training contract which expires after the 11th week"
+  ],
+  "AS-057": [
+    "you are on unpaid leave, so you must contact the relevant body to make alternative"
+  ],
+  "AS-061": [
+    "Have at least 12 months continuous",
+    "continuously for at least 26 weeks"
+  ],
+  "AS-062": [
+    "1 in 6 or more but less than 1 in 3 4.5 per cent"
+  ],
+  "AS-063": [
+    "The on-call period in each week should be divided into nine periods of at least 12 hours."
+  ],
+  "AS-064": [
+    "time and a half, with the exception of work on general public holidays which will be at",
+    "double time"
+  ],
+  "AS-065": [
+    "There will be a minimum period of two hours’ payment for work undertaken onsite, including"
+  ],
+  "AS-066": [
+    "A minimum of 15 minutes is assumed for payment of work undertaken by telephone."
+  ],
+  "AS-067": [
+    "However, if for operational reasons time off in lieu cannot be taken within"
+  ],
+  "AS-069": [
+    "home, up to a maximum of one hour each way, subject to service needs."
+  ],
+  "AS-071": [
+    "payment and any payment for work undertaken, plus TOIL equivalent to the day you would",
+    "this would be a 7.5 hour day not a whole on-call"
+  ],
+  "AS-072": [
+    "Itemised telephone bills, which have business calls highlighted, will be reimbursed at the",
+    "Telephone line rental will not be reimbursed to you"
+  ],
+  "AS-075": [
+    "Your line manager should make a decision within 4 weeks of receiving your request"
+  ],
+  "AS-078": [
+    "and your manager and we would recommend that it is between 3-6 months in length."
+  ],
+  "AS-079": [
+    "your agile/flexible working agreement, this will be undertaken on a pro rata basis, if"
+  ],
+  "AS-080": [
+    "can be made informally through, a conversation between you and your line manager.",
+    "nominated base of work"
+  ],
+  "AS-083": [
+    "New starters are required to pay for the DBS which will be deducted from their"
+  ],
+  "AS-085": [
+    "A prospective employee will not be allowed to start working in a ‘regulated activity’"
+  ],
+  "AS-092": [
+    "Employees do not have a contractual right to pay protection."
+  ],
+  "AS-095": [
+    "group and they are required to have a check against one or both barred lists.",
+    "recruitment process (from 01 February 2019) to pay for disclosure application or"
+  ],
+  "AS-098": [
+    "Up to 9 months 4 months"
+  ],
+  "AS-099": [
+    "promoted will not be subject to a probationary period unless they are still within their"
+  ],
+  "AS-100": [
+    "profile, which will evaluate the role against 16 Factors.",
+    "least two trained members from both Management and Staff Side."
+  ],
+  "AS-101": [
+    "will be suspended from duty until the notification of the renewal is received and will receive no",
+    "the line manager will be responsible for notifying Payroll at once"
+  ],
+  "AS-103": [
+    "resolution has been raised with vexatious or malicious intent, this will be taken"
+  ],
+  "AS-106": [
+    [
+      "junior doctors, locum, bank and agency workers",
+      "junior doctors, locum bank and agency workers"
+    ]
+  ],
+  "AS-107": [
+    "remain confidential your name will only be known to the FTSU Guardian, and this",
+    "Should you wish to raise concern anonymously this will always be respected and"
+  ],
+  "AS-109": [
+    "of termination of the secondment"
+  ],
+  "CS-001": [
+    "4.1 The framework comprises five parts"
+  ],
+  "CS-002": [
+    "If you’re eligible, you can get £123.25 a week Statutory Sick Pay (SSP) or"
+  ],
+  "CS-003": [
+    "£194.32 or 90% of your average weekly earnings (whichever is lower) for"
+  ],
+  "CS-005": [
+    [
+      "Or, if you’re taking Paternity Leave in two separate one-week blocks,",
+      "take them separately in one-week blocks"
+    ],
+    [
+      "Your leave must end within 52 weeks of the child’s birth.",
+      "It must end within 52 weeks of the baby’s birth"
+    ]
+  ],
+  "CS-006": [
+    "earn on average at least £129 a week",
+    "earn an average of at least £129 a week (before tax)"
+  ],
+  "CS-008": [
+    [
+      "must each earn on average at least £129 a",
+      "must earn on average at least £129 a",
+      "they must earn on average at least £129 each a"
+    ]
+  ],
+  "PI-003": [
+    "As an NHS employee you have the right to take 52 weeks of maternity leave, regardless of"
+  ],
+  "PI-004": [
+    "every three years, as opposed to each time they rotate to a new Trust.",
+    "New starters are required to pay for the DBS which will be deducted from their"
+  ],
+  "PI-011": [
+    "An allowance equivalent to the balance of the annual leave entitlement on the date"
+  ],
+  "PI-014": [
+    "least two trained members from both Management and Staff Side."
+  ],
+  "PI-015": [
+    "You must appeal within seven calendar days of getting your"
+  ],
+  "PI-016": [
+    "Rate per week £3.65",
+    "Small Profits Threshold £7,105"
+  ],
+  "PI-018": [
+    "(27 days plus 8 public holidays)"
+  ],
+  "PI-019": [
+    "change and take at least a 10% drop in pay for a minimum of 12 months."
+  ],
+  "PI-020": [
+    "All candidates recruited into the Trust must undergo pre-employment checks."
+  ],
+  "PI-021": [
+    "will be suspended from duty until the notification of the renewal is received and will receive no"
+  ],
+  "PI-022": [
+    "• UNISON • British Association of Occupational Therapists (BAOT)",
+    "Guild of Healthcare Pharmacists Whilst for the purposes"
+  ],
+  "PI-024": [
+    "As an NHS employee you have the right to take 1 or 2 weeks paternity leave, regardless of"
+  ],
+  "SY-002": [
+    "(27 days plus 8 public holidays)",
+    "27 days per year if have less than 5 years NHS"
+  ],
+  "SY-003": [
+    "ShPP is paid at the rate of £194.32 a week or 90% of your average weekly",
+    "except that during the first 6 weeks SMP is paid at 90% of whatever you"
+  ],
+  "SY-005": [
+    "The statutory weekly rate of Paternity Pay is £194.32, or 90% of your",
+    "ShPP is paid at the rate of £194.32 a week or 90% of your average weekly"
+  ],
+  "SY-007": [
+    "for at least 26 weeks continuing into the ‘qualifying week’ - the 15th",
+    "The ‘qualifying week’ is the 15th week before the baby is due."
+  ],
+  "SY-008": [
+    "- this may be restricted to 4 weeks per year.",
+    "leave/entitlement) per child, up to their 18th birthday."
+  ],
+  "SY-009": [
+    [
+      "A mother cannot return to work before the end of the compulsory 2 weeks of",
+      "you must take 2 weeks’ leave after your baby is born"
+    ]
+  ],
+  "SY-010": [
+    "Statutory Maternity Pay (SMP) is paid for up to 39 weeks.",
+    "It’s paid by your employer for up to 28 weeks."
+  ],
+  "SY-015": [
+    "You can book up to 3 separate blocks of Shared Parental Leave (SPL)",
+    "You can submit a maximum three separate notifications to book periods of leave, giving at"
+  ],
+  "SY-022": [
+    "within 5 working days of the date of the letter advising of the decision by the relevant",
+    "submission of an appeal within one week of the date the outcome was sent to the manager",
+    "You must appeal within seven calendar days of getting your"
+  ],
+  "SY-023": [
+    "with the exclusion of Training Doctors",
+    "This policy applies to all Trust posts that are covered by AfC Terms and Conditions"
+  ],
+  "SY-025": [
+    "The secondee must adhere to policies and procedure of the Trust throughout the",
+    "each secondee must be compliant with the local policies and procedures of the host organisation."
+  ]
+}

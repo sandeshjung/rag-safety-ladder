@@ -1,0 +1,969 @@
+{
+  "_about": "Why each wrong clean-grid answer with its expected document in context was wrong. One primary cause per answer; passage_in_context is computed from eval/evidence.json; verifier_removed_text marks answers the verifier shortened. Labeller: claude, by reading each answer against the reference and the context; not independently checked.",
+  "causes": {
+    "versions_mixed": "used a superseded copy's figure or rule, alone or beside the current one",
+    "passage_missing": "the passage holding the answer never reached the context",
+    "passage_incomplete": "only part of a multi-part answer's evidence reached the context",
+    "table_misread": "the right table row was in context but the answer read another row",
+    "omitted_detail": "right core answer, missing a condition the reference requires",
+    "verifier_removed_correct_text": "the draft was right; the verifier deleted the sentence that made it so",
+    "reasoning_error": "the evidence was there and the model reasoned wrongly from it",
+    "judge_disagreement": "complete and correct on reading; the judge's verdict looks too strict"
+  },
+  "labels": [
+    {
+      "config_id": "A",
+      "question_id": "AS-006",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Lists the superseded 2025 page's conditions beside the current ones."
+    },
+    {
+      "config_id": "B",
+      "question_id": "AS-006",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Lists the superseded 2025 page's conditions beside the current ones."
+    },
+    {
+      "config_id": "C",
+      "question_id": "AS-006",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Lists the superseded 2025 page's conditions beside the current ones."
+    },
+    {
+      "config_id": "D",
+      "question_id": "AS-006",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Lists the superseded 2025 page's conditions beside the current ones."
+    },
+    {
+      "config_id": "E",
+      "question_id": "AS-006",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": true,
+      "note": "Lists the superseded 2025 page's conditions beside the current ones."
+    },
+    {
+      "config_id": "F",
+      "question_id": "AS-006",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": true,
+      "note": "Lists the superseded 2025 page's conditions beside the current ones."
+    },
+    {
+      "config_id": "G",
+      "question_id": "AS-006",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": true,
+      "note": "Lists the superseded 2025 page's conditions beside the current ones."
+    },
+    {
+      "config_id": "A",
+      "question_id": "AS-012",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £123 (2025 copy) and £129 (current)."
+    },
+    {
+      "config_id": "B",
+      "question_id": "AS-012",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £123 (2025 copy) and £129 (current)."
+    },
+    {
+      "config_id": "C",
+      "question_id": "AS-012",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £123 (2025 copy) and £129 (current)."
+    },
+    {
+      "config_id": "D",
+      "question_id": "AS-012",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £123 (2025 copy) and £129 (current)."
+    },
+    {
+      "config_id": "A",
+      "question_id": "AS-016",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £184.03 (2025 copy) and £194.32 (current)."
+    },
+    {
+      "config_id": "B",
+      "question_id": "AS-016",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £184.03 (2025 copy) and £194.32 (current)."
+    },
+    {
+      "config_id": "C",
+      "question_id": "AS-016",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £184.03 (2025 copy) and £194.32 (current)."
+    },
+    {
+      "config_id": "D",
+      "question_id": "AS-016",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £184.03 (2025 copy) and £194.32 (current)."
+    },
+    {
+      "config_id": "E",
+      "question_id": "AS-016",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £184.03 (2025 copy) and £194.32 (current)."
+    },
+    {
+      "config_id": "A",
+      "question_id": "AS-018",
+      "verdict": "INCORRECT",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Adds the superseded 56-day rule for babies due before 6 April 2024."
+    },
+    {
+      "config_id": "B",
+      "question_id": "AS-018",
+      "verdict": "INCORRECT",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Adds the superseded 56-day rule for babies due before 6 April 2024."
+    },
+    {
+      "config_id": "C",
+      "question_id": "AS-018",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Adds the superseded 56-day rule for babies due before 6 April 2024."
+    },
+    {
+      "config_id": "D",
+      "question_id": "AS-018",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Adds the superseded 56-day rule for babies due before 6 April 2024."
+    },
+    {
+      "config_id": "E",
+      "question_id": "AS-018",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": true,
+      "note": "Adds the superseded 56-day rule for babies due before 6 April 2024."
+    },
+    {
+      "config_id": "F",
+      "question_id": "AS-018",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": true,
+      "note": "Adds the superseded 56-day rule for babies due before 6 April 2024."
+    },
+    {
+      "config_id": "G",
+      "question_id": "AS-018",
+      "verdict": "INCORRECT",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": true,
+      "note": "Adds the superseded 56-day rule for babies due before 6 April 2024."
+    },
+    {
+      "config_id": "C",
+      "question_id": "AS-034",
+      "verdict": "PARTIAL",
+      "cause": "table_misread",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Reports the special Class 2 rates (share fishermen, volunteers) instead of the standard £3.65 row, which was in context."
+    },
+    {
+      "config_id": "E",
+      "question_id": "AS-034",
+      "verdict": "PARTIAL",
+      "cause": "table_misread",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Reports the special Class 2 rates (share fishermen, volunteers) instead of the standard £3.65 row, which was in context."
+    },
+    {
+      "config_id": "A",
+      "question_id": "AS-037",
+      "verdict": "PARTIAL",
+      "cause": "passage_incomplete",
+      "passage_in_context": "some",
+      "verifier_removed_text": false,
+      "note": "A: rate row not in context, says it cannot give the rate. Others: add 2.73%, a past-year column from the 2025 copy's table."
+    },
+    {
+      "config_id": "C",
+      "question_id": "AS-037",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "A: rate row not in context, says it cannot give the rate. Others: add 2.73%, a past-year column from the 2025 copy's table."
+    },
+    {
+      "config_id": "D",
+      "question_id": "AS-037",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "A: rate row not in context, says it cannot give the rate. Others: add 2.73%, a past-year column from the 2025 copy's table."
+    },
+    {
+      "config_id": "E",
+      "question_id": "AS-037",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "A: rate row not in context, says it cannot give the rate. Others: add 2.73%, a past-year column from the 2025 copy's table."
+    },
+    {
+      "config_id": "F",
+      "question_id": "AS-037",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "A: rate row not in context, says it cannot give the rate. Others: add 2.73%, a past-year column from the 2025 copy's table."
+    },
+    {
+      "config_id": "G",
+      "question_id": "AS-037",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "A: rate row not in context, says it cannot give the rate. Others: add 2.73%, a past-year column from the 2025 copy's table."
+    },
+    {
+      "config_id": "F",
+      "question_id": "AS-043",
+      "verdict": "PARTIAL",
+      "cause": "judge_disagreement",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Complete and correct on reading, plus a further correct rule; PARTIAL looks too strict."
+    },
+    {
+      "config_id": "D",
+      "question_id": "AS-047",
+      "verdict": "PARTIAL",
+      "cause": "judge_disagreement",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Complete and correct on reading, plus a correct Tier 1 note; PARTIAL looks too strict."
+    },
+    {
+      "config_id": "F",
+      "question_id": "AS-047",
+      "verdict": "PARTIAL",
+      "cause": "judge_disagreement",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Complete and correct on reading, plus a correct Tier 1 note; PARTIAL looks too strict."
+    },
+    {
+      "config_id": "A",
+      "question_id": "AS-057",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Leads with the paid-leave rule (deductions continue) and omits how pension contributions are treated."
+    },
+    {
+      "config_id": "B",
+      "question_id": "AS-057",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Leads with the paid-leave rule (deductions continue) and omits how pension contributions are treated."
+    },
+    {
+      "config_id": "C",
+      "question_id": "AS-057",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Leads with the paid-leave rule (deductions continue) and omits how pension contributions are treated."
+    },
+    {
+      "config_id": "D",
+      "question_id": "AS-057",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Leads with the paid-leave rule (deductions continue) and omits how pension contributions are treated."
+    },
+    {
+      "config_id": "E",
+      "question_id": "AS-057",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Leads with the paid-leave rule (deductions continue) and omits how pension contributions are treated."
+    },
+    {
+      "config_id": "F",
+      "question_id": "AS-057",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Leads with the paid-leave rule (deductions continue) and omits how pension contributions are treated."
+    },
+    {
+      "config_id": "G",
+      "question_id": "AS-057",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Leads with the paid-leave rule (deductions continue) and omits how pension contributions are treated."
+    },
+    {
+      "config_id": "B",
+      "question_id": "AS-061",
+      "verdict": "INCORRECT",
+      "cause": "reasoning_error",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "States that 10 months' service satisfies the 12-month requirement for Occupational Maternity Pay."
+    },
+    {
+      "config_id": "G",
+      "question_id": "AS-066",
+      "verdict": "PARTIAL",
+      "cause": "judge_disagreement",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Complete and correct on reading; PARTIAL looks too strict."
+    },
+    {
+      "config_id": "C",
+      "question_id": "AS-069",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Omits that the return journey is unpaid when the employee stays at work."
+    },
+    {
+      "config_id": "D",
+      "question_id": "AS-069",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Omits that the return journey is unpaid when the employee stays at work."
+    },
+    {
+      "config_id": "B",
+      "question_id": "AS-085",
+      "verdict": "PARTIAL",
+      "cause": "judge_disagreement",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Complete on reading, including every condition in the reference; PARTIAL looks too strict."
+    },
+    {
+      "config_id": "C",
+      "question_id": "AS-095",
+      "verdict": "PARTIAL",
+      "cause": "passage_incomplete",
+      "passage_in_context": "some",
+      "verifier_removed_text": false,
+      "note": "The who-pays passage was not in context; the answer says so rather than guessing."
+    },
+    {
+      "config_id": "D",
+      "question_id": "AS-095",
+      "verdict": "PARTIAL",
+      "cause": "passage_incomplete",
+      "passage_in_context": "some",
+      "verifier_removed_text": false,
+      "note": "The who-pays passage was not in context; the answer says so rather than guessing."
+    },
+    {
+      "config_id": "E",
+      "question_id": "AS-095",
+      "verdict": "PARTIAL",
+      "cause": "passage_incomplete",
+      "passage_in_context": "some",
+      "verifier_removed_text": false,
+      "note": "The who-pays passage was not in context; the answer says so rather than guessing."
+    },
+    {
+      "config_id": "F",
+      "question_id": "AS-095",
+      "verdict": "PARTIAL",
+      "cause": "passage_incomplete",
+      "passage_in_context": "some",
+      "verifier_removed_text": true,
+      "note": "The who-pays passage was not in context; the answer says so rather than guessing."
+    },
+    {
+      "config_id": "A",
+      "question_id": "AS-098",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "The fixed-term table (up to 9 months -> 4 months) was not in context; answers from the neighbouring sentence instead."
+    },
+    {
+      "config_id": "B",
+      "question_id": "AS-098",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "The fixed-term table (up to 9 months -> 4 months) was not in context; answers from the neighbouring sentence instead."
+    },
+    {
+      "config_id": "C",
+      "question_id": "AS-098",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "The fixed-term table (up to 9 months -> 4 months) was not in context; answers from the neighbouring sentence instead."
+    },
+    {
+      "config_id": "D",
+      "question_id": "AS-098",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "The fixed-term table (up to 9 months -> 4 months) was not in context; answers from the neighbouring sentence instead."
+    },
+    {
+      "config_id": "E",
+      "question_id": "AS-098",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "The fixed-term table (up to 9 months -> 4 months) was not in context; answers from the neighbouring sentence instead."
+    },
+    {
+      "config_id": "F",
+      "question_id": "AS-098",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "The fixed-term table (up to 9 months -> 4 months) was not in context; answers from the neighbouring sentence instead."
+    },
+    {
+      "config_id": "G",
+      "question_id": "AS-098",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "The fixed-term table (up to 9 months -> 4 months) was not in context; answers from the neighbouring sentence instead."
+    },
+    {
+      "config_id": "E",
+      "question_id": "AS-100",
+      "verdict": "PARTIAL",
+      "cause": "verifier_removed_correct_text",
+      "passage_in_context": "all",
+      "verifier_removed_text": true,
+      "note": "The draft covered job matching; the verifier marked that sentence PARTIAL and removed it, leaving only the panel."
+    },
+    {
+      "config_id": "A",
+      "question_id": "AS-103",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Right outcome; omits what counts as malicious."
+    },
+    {
+      "config_id": "E",
+      "question_id": "AS-103",
+      "verdict": "INCORRECT",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Right outcome; omits what counts as malicious."
+    },
+    {
+      "config_id": "D",
+      "question_id": "AS-107",
+      "verdict": "PARTIAL",
+      "cause": "passage_incomplete",
+      "passage_in_context": "some",
+      "verifier_removed_text": false,
+      "note": "Part of the confidential-vs-anonymous passage was not in context."
+    },
+    {
+      "config_id": "F",
+      "question_id": "AS-107",
+      "verdict": "PARTIAL",
+      "cause": "passage_incomplete",
+      "passage_in_context": "some",
+      "verifier_removed_text": false,
+      "note": "Part of the confidential-vs-anonymous passage was not in context."
+    },
+    {
+      "config_id": "C",
+      "question_id": "AS-109",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Omits that both managers must agree and that the employee must notify their substantive employer."
+    },
+    {
+      "config_id": "D",
+      "question_id": "AS-109",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Omits that both managers must agree and that the employee must notify their substantive employer."
+    },
+    {
+      "config_id": "C",
+      "question_id": "CS-002",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £116.75 (2025 copy) and £123.25 (current)."
+    },
+    {
+      "config_id": "D",
+      "question_id": "CS-002",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £116.75 (2025 copy) and £123.25 (current)."
+    },
+    {
+      "config_id": "A",
+      "question_id": "CS-003",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £184.03 (2025 copy) and £194.32 (current)."
+    },
+    {
+      "config_id": "B",
+      "question_id": "CS-003",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £184.03 (2025 copy) and £194.32 (current)."
+    },
+    {
+      "config_id": "C",
+      "question_id": "CS-003",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £184.03 (2025 copy) and £194.32 (current)."
+    },
+    {
+      "config_id": "D",
+      "question_id": "CS-003",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Gives both £184.03 (2025 copy) and £194.32 (current)."
+    },
+    {
+      "config_id": "D",
+      "question_id": "CS-005",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Adds the superseded 56-day rule from the 2025 copy."
+    },
+    {
+      "config_id": "F",
+      "question_id": "CS-005",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Adds the superseded 56-day rule from the 2025 copy."
+    },
+    {
+      "config_id": "G",
+      "question_id": "CS-005",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Adds the superseded 56-day rule from the 2025 copy."
+    },
+    {
+      "config_id": "A",
+      "question_id": "CS-006",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "Only the 2025 copy's threshold passage was in context; answers £123."
+    },
+    {
+      "config_id": "D",
+      "question_id": "CS-006",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "Only the 2025 copy's threshold passage was in context; answers £123."
+    },
+    {
+      "config_id": "E",
+      "question_id": "CS-006",
+      "verdict": "INCORRECT",
+      "cause": "versions_mixed",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "Only the 2025 copy's threshold passage was in context; answers £123."
+    },
+    {
+      "config_id": "F",
+      "question_id": "CS-006",
+      "verdict": "INCORRECT",
+      "cause": "versions_mixed",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "Only the 2025 copy's threshold passage was in context; answers £123."
+    },
+    {
+      "config_id": "A",
+      "question_id": "CS-008",
+      "verdict": "INCORRECT",
+      "cause": "versions_mixed",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "Only the 2025 copy's threshold passage was in context; answers £123."
+    },
+    {
+      "config_id": "C",
+      "question_id": "CS-008",
+      "verdict": "INCORRECT",
+      "cause": "versions_mixed",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "Only the 2025 copy's threshold passage was in context; answers £123."
+    },
+    {
+      "config_id": "D",
+      "question_id": "CS-008",
+      "verdict": "INCORRECT",
+      "cause": "versions_mixed",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "Only the 2025 copy's threshold passage was in context; answers £123."
+    },
+    {
+      "config_id": "E",
+      "question_id": "CS-008",
+      "verdict": "INCORRECT",
+      "cause": "versions_mixed",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "Only the 2025 copy's threshold passage was in context; answers £123."
+    },
+    {
+      "config_id": "F",
+      "question_id": "CS-008",
+      "verdict": "INCORRECT",
+      "cause": "versions_mixed",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "Only the 2025 copy's threshold passage was in context; answers £123."
+    },
+    {
+      "config_id": "G",
+      "question_id": "CS-008",
+      "verdict": "INCORRECT",
+      "cause": "versions_mixed",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "Only the 2025 copy's threshold passage was in context; answers £123."
+    },
+    {
+      "config_id": "G",
+      "question_id": "FP-018",
+      "verdict": "INCORRECT",
+      "cause": "reasoning_error",
+      "passage_in_context": null,
+      "verifier_removed_text": false,
+      "note": "Accepts the false premise and explains a refusal rule the policy does not state."
+    },
+    {
+      "config_id": "F",
+      "question_id": "PI-014",
+      "verdict": "INCORRECT",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Omits the consistency-checking panel; INCORRECT looks harsh for an omission."
+    },
+    {
+      "config_id": "G",
+      "question_id": "PI-014",
+      "verdict": "INCORRECT",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Omits the consistency-checking panel; INCORRECT looks harsh for an omission."
+    },
+    {
+      "config_id": "B",
+      "question_id": "PI-016",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "The standard-rate row was not in context; lists special Class 2 rates by year."
+    },
+    {
+      "config_id": "A",
+      "question_id": "PI-018",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "The entitlement table (27 days + 8 public holidays) was not in context."
+    },
+    {
+      "config_id": "B",
+      "question_id": "PI-018",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "The entitlement table (27 days + 8 public holidays) was not in context."
+    },
+    {
+      "config_id": "C",
+      "question_id": "PI-018",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "The entitlement table (27 days + 8 public holidays) was not in context."
+    },
+    {
+      "config_id": "D",
+      "question_id": "PI-018",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": false,
+      "note": "The entitlement table (27 days + 8 public holidays) was not in context."
+    },
+    {
+      "config_id": "E",
+      "question_id": "PI-018",
+      "verdict": "INCORRECT",
+      "cause": "passage_missing",
+      "passage_in_context": "none",
+      "verifier_removed_text": true,
+      "note": "The entitlement table (27 days + 8 public holidays) was not in context."
+    },
+    {
+      "config_id": "A",
+      "question_id": "PI-020",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Omits that an unconditional offer follows only once checks are met."
+    },
+    {
+      "config_id": "C",
+      "question_id": "PI-020",
+      "verdict": "PARTIAL",
+      "cause": "omitted_detail",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Omits that an unconditional offer follows only once checks are met."
+    },
+    {
+      "config_id": "A",
+      "question_id": "PI-021",
+      "verdict": "PARTIAL",
+      "cause": "judge_disagreement",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Complete on reading, including suspension, Payroll, the formal meeting and dismissal on repeat; PARTIAL looks too strict."
+    },
+    {
+      "config_id": "D",
+      "question_id": "PI-021",
+      "verdict": "PARTIAL",
+      "cause": "judge_disagreement",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Complete on reading, including suspension, Payroll, the formal meeting and dismissal on repeat; PARTIAL looks too strict."
+    },
+    {
+      "config_id": "F",
+      "question_id": "PI-021",
+      "verdict": "PARTIAL",
+      "cause": "judge_disagreement",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Complete on reading, including suspension, Payroll, the formal meeting and dismissal on repeat; PARTIAL looks too strict."
+    },
+    {
+      "config_id": "A",
+      "question_id": "SY-003",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Mixes £184.03 (2025 copy) into the ShPP rate."
+    },
+    {
+      "config_id": "B",
+      "question_id": "SY-003",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Mixes £184.03 (2025 copy) into the ShPP rate."
+    },
+    {
+      "config_id": "C",
+      "question_id": "SY-003",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Mixes £184.03 (2025 copy) into the ShPP rate."
+    },
+    {
+      "config_id": "A",
+      "question_id": "SY-005",
+      "verdict": "INCORRECT",
+      "cause": "versions_mixed",
+      "passage_in_context": "some",
+      "verifier_removed_text": false,
+      "note": "Compares the 2025 copy's rates with the current ones instead of current with current."
+    },
+    {
+      "config_id": "B",
+      "question_id": "SY-005",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "all",
+      "verifier_removed_text": false,
+      "note": "Compares the 2025 copy's rates with the current ones instead of current with current."
+    },
+    {
+      "config_id": "C",
+      "question_id": "SY-005",
+      "verdict": "PARTIAL",
+      "cause": "versions_mixed",
+      "passage_in_context": "some",
+      "verifier_removed_text": false,
+      "note": "Compares the 2025 copy's rates with the current ones instead of current with current."
+    },
+    {
+      "config_id": "C",
+      "question_id": "SY-007",
+      "verdict": "INCORRECT",
+      "cause": "passage_incomplete",
+      "passage_in_context": "some",
+      "verifier_removed_text": false,
+      "note": "The maternity page's qualifying-week passage was not in context; says it cannot compare."
+    },
+    {
+      "config_id": "E",
+      "question_id": "SY-022",
+      "verdict": "PARTIAL",
+      "cause": "passage_incomplete",
+      "passage_in_context": "some",
+      "verifier_removed_text": false,
+      "note": "Probation and job-evaluation deadlines were not in context; gives the two it had."
+    },
+    {
+      "config_id": "F",
+      "question_id": "SY-022",
+      "verdict": "PARTIAL",
+      "cause": "passage_incomplete",
+      "passage_in_context": "some",
+      "verifier_removed_text": false,
+      "note": "Probation and job-evaluation deadlines were not in context; gives the two it had."
+    }
+  ]
+}
