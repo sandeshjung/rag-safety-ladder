@@ -39,3 +39,16 @@ def load_statutory_chunks(statutory_dir: Path) -> list[Chunk]:
 
 def load_corpus_chunks(employer_dir: Path, statutory_dir: Path) -> list[Chunk]:
     return load_employer_chunks(employer_dir) + load_statutory_chunks(statutory_dir)
+
+
+def load_injected_chunks(injected_dir: Path) -> list[Chunk]:
+    """Load the adversarial corpus.
+
+    These have no cover sheet, so the filename stem is the doc_id and every
+    page is body -- which is also what makes an injected document visually
+    indistinguishable from a real one once it is chunked.
+    """
+    chunks: list[Chunk] = []
+    for pdf_path in sorted(injected_dir.glob("*.pdf")):
+        chunks.extend(chunk_document(pdf_path.stem, load_all_pages(pdf_path)))
+    return chunks

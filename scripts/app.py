@@ -6,7 +6,13 @@ Two modes:
   calls, so it needs no API keys, costs no quota and shows exactly the
   answers the published numbers were computed from.
 - Ask live runs a question of your own through any rung. It calls Gemini and
-  Groq, so it needs keys in .env and spends free-tier quota.
+  Groq with the visitor's own API keys, entered in the page. The keys are
+  used for that one request and never written to disk, logged or shared
+  with another session; see `llm_client.api_keys`. Run locally, it can use
+  the keys in .env instead.
+
+Browsing never imports the search models, so the hosted app starts fast;
+they load on the first live question.
 
 Run:  uv run --group ui streamlit run scripts/app.py
 """
@@ -21,20 +27,25 @@ from pathlib import Path
 import streamlit as st
 
 ROOT = Path(__file__).resolve().parent.parent
+# Both paths, so the app also runs where the package isn't installed (the
+# hosted app installs only scripts/requirements.txt).
 sys.path.insert(0, str(ROOT / "scripts"))
+sys.path.insert(0, str(ROOT / "src"))
 
 from report import build as build_report  # noqa: E402
 from report import rows_and_grades  # noqa: E402
-from run_grid import REGISTER, VERSIONS, load_injected_chunks  # noqa: E402
 
 from refuses_to_lie.analysis import INJECTION_DOC_PREFIX, answered, cited_doc_ids  # noqa: E402
 from refuses_to_lie.config import ALL_CONFIGS  # noqa: E402
 from refuses_to_lie.corpus import Chunk  # noqa: E402
 from refuses_to_lie.grading import grade_for, gradeable  # noqa: E402
-from refuses_to_lie.pipeline import load_corpus_chunks  # noqa: E402
+from refuses_to_lie.pipeline import load_corpus_chunks, load_injected_chunks  # noqa: E402
 from refuses_to_lie.versions import load_versions  # noqa: E402
 
 EVAL_FILE = ROOT / "eval" / "questions.json"
+REGISTER = ROOT / "corpus" / "register.json"
+VERSIONS = ROOT / "corpus" / "versions.json"
+KEY_NAMES = ("GOOGLE_API_KEY", "GROQ_API_KEY")
 CONFIGS = {c.id: c for c in ALL_CONFIGS}
 
 RESULT_SETS = {
@@ -231,44 +242,88 @@ def live_index(include_injected: bool):  # type: ignore[no-untyped-def]
     return Index(loaded)
 
 
+def _redact(message: str, secrets: list[str]) -> str:
+    for secret in secrets:
+        if secret:
+            message = message.replace(secret, "[key]")
+    return message
+
+
 def ask_live() -> None:
+    st.markdown(
+        "Ask your own question through any rung, using **your own** free API keys: "
+        "[Gemini](https://aistudio.google.com/apikey) writes the answer, "
+        "[Groq](https://console.groq.com/keys) runs the gate and the claim checker."
+    )
+    st.caption(
+        "Your keys are sent only to Google and Groq, for this one request. They are "
+        "never written to disk, logged, or shared with anyone else using this app, "
+        "and they are forgotten when you close the tab. A question costs one Gemini "
+        "call and a few Groq calls. The first question takes a minute or two while "
+        "the search models load."
+    )
+
+    env_keys = all(os.environ.get(k) for k in KEY_NAMES)
+    with st.form("ask"):
+        use_env = env_keys and st.checkbox("Use the keys from my .env", value=True)
+        google_key = st.text_input("Gemini API key", type="password", disabled=use_env)
+        groq_key = st.text_input("Groq API key", type="password", disabled=use_env)
+        question = st.text_input(
+            "Your question",
+            "What should a member of staff do immediately if they lose their ID badge?",
+        )
+        config_id = st.selectbox(
+            "Rung", list(CONFIGS), index=list(CONFIGS).index("I"), format_func=rung_name
+        )
+        include_injected = st.checkbox("Put the 25 planted fake documents in the library")
+        submitted = st.form_submit_button("Ask", type="primary")
+    if not submitted:
+        return
+    if not use_env and not (google_key.strip() and groq_key.strip()):
+        st.warning("Enter both keys, or browse the recorded results without any.")
+        return
+    if not question.strip():
+        st.warning("Enter a question.")
+        return
+
+    # Imported only once someone asks: these pull in the search models, and
+    # browsing should never pay for them.
     from refuses_to_lie.answering import answer_question
+    from refuses_to_lie.llm_client import api_keys
     from refuses_to_lie.provenance import trusted_doc_ids
     from refuses_to_lie.rerank import get_reranker
     from refuses_to_lie.versions import superseded_doc_ids
 
-    missing = [k for k in ("GOOGLE_API_KEY", "GROQ_API_KEY") if not os.environ.get(k)]
-    if missing:
-        st.warning(
-            f"Live mode needs {' and '.join(missing)} in .env (see .env.example). "
-            "Browse results works without any keys."
-        )
-    st.caption("Calls Gemini (answers) and Groq (verifier and gate), so it spends quota.")
-
-    question = st.text_input(
-        "Your question",
-        "How much annual leave does a full-time member of staff get on appointment?",
+    keys = (
+        {k: os.environ[k] for k in KEY_NAMES}
+        if use_env
+        else {"GOOGLE_API_KEY": google_key.strip(), "GROQ_API_KEY": groq_key.strip()}
     )
-    config_id = st.selectbox(
-        "Rung", list(CONFIGS), index=list(CONFIGS).index("I"), format_func=rung_name
-    )
-    include_injected = st.checkbox("Put the 25 planted fake documents in the library")
-    if not st.button("Ask", type="primary", disabled=bool(missing)):
-        return
-
     config = CONFIGS[config_id]
     trusted = trusted_doc_ids(REGISTER)
-    with st.spinner("Searching, answering and checking..."):
-        answer = answer_question(
-            question,
-            live_index(include_injected),
-            config,
-            reranker=get_reranker() if config.rerank else None,
-            trusted_docs=trusted if config.require_provenance else None,
-            superseded_docs=(
-                superseded_doc_ids(VERSIONS, trusted) if config.exclude_superseded else None
-            ),
-        )
+    superseded = superseded_doc_ids(VERSIONS, trusted)
+    try:
+        with (
+            st.spinner("Searching, answering and checking..."),
+            api_keys(google=keys["GOOGLE_API_KEY"], groq=keys["GROQ_API_KEY"]),
+        ):
+            answer = answer_question(
+                question,
+                live_index(include_injected),
+                config,
+                reranker=get_reranker() if config.rerank else None,
+                trusted_docs=trusted if config.require_provenance else None,
+                superseded_docs=superseded if config.exclude_superseded else None,
+            )
+    except Exception as exc:
+        # Never show a raw traceback here: it would print the call's locals,
+        # and those include the key.
+        detail = _redact(str(exc), list(keys.values()))
+        st.error(f"The request failed ({type(exc).__name__}): {detail[:500]}")
+        return
+    finally:
+        keys.clear()
+
     row = {
         "answer": answer.text,
         "abstained": answer.abstained,

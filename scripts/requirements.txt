@@ -1,0 +1,17 @@
+# Dependencies for the hosted app (Streamlit Community Cloud), which reads
+# the requirements file beside its entry point, scripts/app.py.
+# Local development uses pyproject.toml and uv.lock instead.
+#
+# PyTorch comes from its CPU-only wheels: the default Linux wheels bundle
+# CUDA libraries (several GB) that a CPU-only host never uses.
+--find-links https://download.pytorch.org/whl/torch/
+torch==2.14.0+cpu
+sentence-transformers==6.1.0
+streamlit>=1.64.0
+google-genai==2.24.0
+httpx>=0.28
+numpy==2.5.3
+pdfplumber==0.11.10
+python-dotenv==1.2.3
+rank-bm25==0.2.2
+requests==2.34.2

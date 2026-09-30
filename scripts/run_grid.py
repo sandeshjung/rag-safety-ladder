@@ -34,7 +34,6 @@ from pathlib import Path
 
 from refuses_to_lie.answering import answer_question
 from refuses_to_lie.config import ALL_CONFIGS, LADDER, RunConfig
-from refuses_to_lie.corpus import Chunk, chunk_document, load_all_pages
 from refuses_to_lie.grid import (
     PARSER_VERSION,
     cache_key,
@@ -43,7 +42,7 @@ from refuses_to_lie.grid import (
     pending_work,
     stratified_sample,
 )
-from refuses_to_lie.pipeline import load_corpus_chunks
+from refuses_to_lie.pipeline import load_corpus_chunks, load_injected_chunks
 from refuses_to_lie.provenance import trusted_doc_ids
 from refuses_to_lie.rerank import Reranker, get_reranker
 from refuses_to_lie.retrieval import Index
@@ -54,19 +53,6 @@ EVAL_FILE = ROOT / "eval" / "questions.json"
 DEFAULT_RESULTS = ROOT / "results" / "grid.jsonl"
 REGISTER = ROOT / "corpus" / "register.json"
 VERSIONS = ROOT / "corpus" / "versions.json"
-
-
-def load_injected_chunks(injected_dir: Path) -> list[Chunk]:
-    """Load the adversarial corpus.
-
-    These have no cover sheet, so the filename stem is the doc_id and every
-    page is body -- which is also what makes an injected document visually
-    indistinguishable from a real one once it is chunked.
-    """
-    chunks: list[Chunk] = []
-    for pdf_path in sorted(injected_dir.glob("*.pdf")):
-        chunks.extend(chunk_document(pdf_path.stem, load_all_pages(pdf_path)))
-    return chunks
 
 
 def run_one(
