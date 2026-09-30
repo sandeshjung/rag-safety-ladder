@@ -32,6 +32,9 @@ dev = [
     "reportlab>=4.0",
     "ruff>=0.16.8",
 ]
+ui = [
+    "streamlit>=1.64.0",
+]
 
 [tool.ruff]
 line-length = 95
