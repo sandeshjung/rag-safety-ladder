@@ -3,6 +3,8 @@ name = "rag-safety-ladder"
 version = "0.1.0"
 description = "A 10-rung RAG evaluation measuring which safeguards actually reduce confident wrong answers"
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
     { name = "Sandesh Jung Kunwar", email = "sandeshjung@gmail.com" }
 ]
