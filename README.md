@@ -113,7 +113,7 @@ small open models (bge-small embeddings and a MiniLM re-ranker, about 200 MB).
 
 ### Online
 
-The results viewer is hosted at **[PENDING: app URL]**. Nothing to install.
+The results viewer is hosted at **[rag-safety-ladder.streamlit.app](https://rag-safety-ladder-uzybymulmufern8up6qhnd.streamlit.app/)**. Nothing to install.
 
 ### In the browser, locally (no API keys needed)
 
