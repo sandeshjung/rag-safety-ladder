@@ -111,13 +111,17 @@ small open models (bge-small embeddings and a MiniLM re-ranker, about 200 MB).
 
 ## View the results
 
-### In the browser (no API keys needed)
+### Online
+
+The results viewer is hosted at **[PENDING: app URL]**. Nothing to install.
+
+### In the browser, locally (no API keys needed)
 
 ```bash
 uv run --group ui streamlit run scripts/app.py
 ```
 
-This opens a local app with three modes:
+This opens the same app locally. It has three modes:
 
 - **Browse results** replays the recorded answers. Pick a result set (clean
   library, planted documents, or the Claude comparison), a question type and
@@ -130,8 +134,28 @@ This opens a local app with three modes:
 - **Scorecard** shows the full results tables (the output of
   `scripts/report.py`).
 - **Ask live** runs a question of your own through any rung, optionally with
-  the planted documents in the library. This calls Gemini and Groq, so it
-  needs API keys (see below) and spends free-tier quota.
+  the planted documents in the library. It calls Gemini and Groq with
+  **your own** free API keys (see below), entered in the page. The keys are
+  used for that one request only: they are never written to disk, logged,
+  or shared with anyone else using the app. Run locally with keys in `.env`,
+  it can use those instead. The first question takes a minute or two while
+  the search models load.
+
+### Deploying your own copy
+
+The app runs on [Streamlit Community Cloud](https://share.streamlit.io) for
+free:
+
+1. Fork this repository.
+2. At share.streamlit.io, choose **Create app**, pick your fork, branch
+   `main`, and main file path `scripts/app.py`. Under **Advanced settings**,
+   choose Python 3.12.
+3. Deploy. Do not add API keys as secrets: visitors supply their own in
+   Ask live, so a hosted copy never spends yours.
+
+The host installs `scripts/requirements.txt` (the file beside the app), which
+pulls CPU-only PyTorch for the live mode's search models. Browsing never
+loads those models.
 
 ### In the terminal
 
