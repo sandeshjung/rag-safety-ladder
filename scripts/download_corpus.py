@@ -1,113 +1,94 @@
+"""Download the hospital trust's HR policies that the employer corpus came from.
 
-import os
+Fetches every PDF linked under "Human Resources policies and procedures" on
+the trust's public policies page. This is how corpus/employer/ was built, but
+it will not reproduce it exactly: the corpus is a hand-picked selection of 23
+of these documents, and the page changes as policies are revised. The PDFs
+committed in corpus/employer/ are the ones every result was measured on, and
+corpus/register.json pins their exact contents.
+
+Usage:
+  uv run python scripts/download_corpus.py                 # into corpus/downloads/
+  uv run python scripts/download_corpus.py --out some/dir
+"""
+
+from __future__ import annotations
+
+import argparse
 import re
-import requests
-from bs4 import BeautifulSoup
+from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
+import requests
+from bs4 import BeautifulSoup
+
+ROOT = Path(__file__).resolve().parent.parent
 BASE_URL = "https://www.kgh.nhs.uk/policies-and-procedures/"
-OUTPUT_DIR = "corpus/employer"
-
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-headers = {
-    "User-Agent": "Mozilla/5.0"
-}
+SECTION = "human resources policies and procedures"
+HEADERS = {"User-Agent": "Mozilla/5.0"}
 
 
-def clean_filename(filename):
-    """Remove invalid characters from filenames."""
+def clean_filename(filename: str) -> str:
     return re.sub(r'[<>:"/\\|?*]', "_", filename).strip()
 
 
-def download_hr_pdfs():
-    response = requests.get(BASE_URL, headers=headers, timeout=30)
+def hr_pdf_links() -> list[str]:
+    """PDF links between the HR section heading and the next heading."""
+    response = requests.get(BASE_URL, headers=HEADERS, timeout=30)
     response.raise_for_status()
-
     soup = BeautifulSoup(response.text, "html.parser")
 
-    # Find the Human Resources section heading
-    hr_heading = None
+    heading = next(
+        (
+            h
+            for h in soup.find_all(["h2", "h3"])
+            if SECTION in h.get_text(" ", strip=True).lower()
+        ),
+        None,
+    )
+    if heading is None:
+        raise RuntimeError("HR section not found; the page structure may have changed.")
 
-    for heading in soup.find_all(["h2", "h3"]):
-        text = heading.get_text(" ", strip=True).lower()
-
-        if "human resources policies and procedures" in text:
-            hr_heading = heading
+    links: list[str] = []
+    for element in heading.find_all_next():
+        if element.name in ("h2", "h3"):
             break
-
-    if not hr_heading:
-        raise RuntimeError(
-            "Human Resources section not found. "
-            "The website structure may have changed."
-        )
-
-    pdf_links = []
-
-    # Collect links until the next section heading
-    for element in hr_heading.find_all_next():
-
-        if element.name in ["h2", "h3"] and element != hr_heading:
-            break
-
-        if element.name != "a":
-            continue
-
-        href = element.get("href")
-
+        href = element.get("href") if element.name == "a" else None
         if not href:
             continue
+        url = urljoin(BASE_URL, str(href))
+        if urlparse(url).path.lower().endswith(".pdf") and url not in links:
+            links.append(url)
+    return links
 
-        url = urljoin(BASE_URL, href)
 
-        # Only collect PDF links
-        if urlparse(url).path.lower().endswith(".pdf"):
-            if url not in pdf_links:
-                pdf_links.append(url)
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--out", type=Path, default=ROOT / "corpus" / "downloads")
+    args = parser.parse_args()
+    args.out.mkdir(parents=True, exist_ok=True)
 
-    print(f"Found {len(pdf_links)} PDF files.")
-
-    for index, pdf_url in enumerate(pdf_links, start=1):
-
-        filename = os.path.basename(urlparse(pdf_url).path)
-
-        if not filename.lower().endswith(".pdf"):
-            filename = f"policy_{index}.pdf"
-
-        filename = clean_filename(filename)
-
-        filepath = os.path.join(OUTPUT_DIR, filename)
-
-        if os.path.exists(filepath):
-            print(f"[SKIP] {filename}")
+    links = hr_pdf_links()
+    print(f"Found {len(links)} PDF files.")
+    for index, url in enumerate(links, start=1):
+        name = clean_filename(Path(urlparse(url).path).name) or f"policy_{index}.pdf"
+        path = args.out / name
+        if path.exists():
+            print(f"[skip] {name}")
             continue
-
         try:
-            print(f"[{index}/{len(pdf_links)}] Downloading {filename}")
-
-            pdf_response = requests.get(
-                pdf_url,
-                headers=headers,
-                timeout=60
-            )
-
-            pdf_response.raise_for_status()
-
-            # Verify the response appears to be a PDF
-            if not pdf_response.content.startswith(b"%PDF"):
-                print(f"[WARNING] Not a valid PDF: {pdf_url}")
-                continue
-
-            with open(filepath, "wb") as file:
-                file.write(pdf_response.content)
-
-            print(f"[SAVED] {filepath}")
-
+            response = requests.get(url, headers=HEADERS, timeout=60)
+            response.raise_for_status()
         except requests.RequestException as error:
-            print(f"[ERROR] {pdf_url}: {error}")
-
-    print("\nDownload completed!")
+            print(f"[error] {url}: {error}")
+            continue
+        # A missing file often comes back as an HTML error page with a 200.
+        if not response.content.startswith(b"%PDF"):
+            print(f"[not a pdf] {url}")
+            continue
+        path.write_bytes(response.content)
+        print(f"[{index}/{len(links)}] saved {path}")
 
 
 if __name__ == "__main__":
-    download_hr_pdfs()
+    main()

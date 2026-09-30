@@ -14,3 +14,6 @@ wheels/
 
 # LLM response cache
 .cache/
+
+# Fresh downloads from scripts/download_corpus.py (the committed corpus is a selection)
+corpus/downloads/
