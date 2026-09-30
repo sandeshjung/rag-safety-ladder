@@ -1,4 +1,4 @@
-# refuses-to-lie
+# rag-safety-ladder
 
 A retrieval-augmented question-answering system over HR policy documents,
 built to measure one thing: **how often it answers confidently and wrongly,
@@ -100,7 +100,7 @@ What the data shows:
 Requires Python 3.12 and [uv](https://docs.astral.sh/uv/getting-started/installation/).
 
 ```bash
-git clone <this repository> && cd refuses-to-lie
+git clone https://github.com/sandeshjung/rag-safety-ladder.git && cd rag-safety-ladder
 uv sync
 ```
 

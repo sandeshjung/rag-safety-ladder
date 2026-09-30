@@ -331,7 +331,7 @@ def build() -> str:
         return f"## {title}\n\n{render()}\n"
 
     parts = [
-        "# refuses-to-lie: results\n",
+        "# rag-safety-ladder: results\n",
         "Accuracy is the share of graded answers the judge marked CORRECT "
         "(PARTIAL counts as wrong). ± is a 95% Wilson interval.\n",
         section("1. Ladder, clean corpus", lambda: ladder(clean, clean_grades)),

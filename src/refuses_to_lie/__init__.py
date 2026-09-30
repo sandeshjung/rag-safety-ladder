@@ -1,2 +1,2 @@
 def main() -> None:
-    print("Hello from refuses-to-lie!")
+    print("Hello from rag-safety-ladder!")

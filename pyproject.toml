@@ -1,7 +1,7 @@
 [project]
-name = "refuses-to-lie"
+name = "rag-safety-ladder"
 version = "0.1.0"
-description = "Add your description here"
+description = "A 10-rung RAG evaluation measuring which safeguards actually reduce confident wrong answers"
 readme = "README.md"
 authors = [
     { name = "Sandesh Jung Kunwar", email = "sandeshjung@gmail.com" }
@@ -16,14 +16,19 @@ dependencies = [
     "rank-bm25>=0.2.2",
     "requests>=2.34.2",
     "sentence-transformers>=6.1.0",
+    "torchvision>=0.29.0",
 ]
 
 [project.scripts]
-refuses-to-lie = "refuses_to_lie:main"
+rag-safety-ladder = "refuses_to_lie:main"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
 build-backend = "uv_build"
+
+[tool.uv.build-backend]
+# The distribution was renamed; the import package keeps its original name.
+module-name = "refuses_to_lie"
 
 [dependency-groups]
 dev = [

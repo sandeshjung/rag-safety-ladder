@@ -284,8 +284,8 @@ def ask_live() -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title="refuses-to-lie", layout="wide")
-    st.sidebar.title("refuses-to-lie")
+    st.set_page_config(page_title="rag-safety-ladder", layout="wide")
+    st.sidebar.title("rag-safety-ladder")
     mode = st.sidebar.radio("Mode", ["Browse results", "Scorecard", "Ask live"])
     {"Browse results": browse, "Scorecard": scorecard, "Ask live": ask_live}[mode]()
 
