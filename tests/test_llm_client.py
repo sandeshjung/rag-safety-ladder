@@ -234,3 +234,50 @@ def test_the_google_client_is_built_with_a_request_timeout(monkeypatch):
 
     assert captured["http_options"].timeout == REQUEST_TIMEOUT_MS
     assert REQUEST_TIMEOUT_MS > 0
+
+
+def test_session_keys_override_the_environment_only_inside_the_block(monkeypatch):
+    # The hosted app runs every visitor in one process. A visitor's key must
+    # reach their own calls and nobody else's, and be gone afterwards.
+    sent = []
+
+    def fake_post(url, headers, json, timeout):
+        sent.append(headers["Authorization"])
+        response = Mock()
+        response.json.return_value = {"choices": [{"message": {"content": "ok"}}]}
+        return response
+
+    monkeypatch.setattr("refuses_to_lie.llm_client.requests.post", fake_post)
+    monkeypatch.setattr("refuses_to_lie.llm_client._groq_limiter.wait", lambda: None)
+    monkeypatch.setenv("GROQ_API_KEY", "owner-key")
+
+    with llm_client.api_keys(google="visitor-google", groq="visitor-groq"):
+        call_groq("hi", model="m")
+    call_groq("hi", model="m")
+
+    assert sent == ["Bearer visitor-groq", "Bearer owner-key"]
+
+
+def test_a_session_key_never_becomes_the_shared_google_client(monkeypatch):
+    built = []
+
+    class FakeClient:
+        def __init__(self, **kwargs):
+            built.append(kwargs["api_key"])
+
+    monkeypatch.setattr("refuses_to_lie.llm_client.genai.Client", FakeClient)
+    monkeypatch.setattr("refuses_to_lie.llm_client._google_client", None)
+    monkeypatch.setenv("GOOGLE_API_KEY", "owner-key")
+
+    with llm_client.api_keys(google="visitor-google", groq="visitor-groq"):
+        llm_client._get_google_client()
+    assert llm_client._google_client is None
+
+    llm_client._get_google_client()
+    assert built == ["visitor-google", "owner-key"]
+
+
+def test_session_keys_are_forgotten_even_when_the_call_fails():
+    with pytest.raises(RuntimeError), llm_client.api_keys(google="g", groq="q"):
+        raise RuntimeError("provider down")
+    assert llm_client._session_key("GROQ_API_KEY") is None

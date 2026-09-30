@@ -21,7 +21,9 @@ import os
 import random
 import re
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
+from contextvars import ContextVar
 from pathlib import Path
 
 import httpx
@@ -42,18 +44,49 @@ _RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 
 _google_client: genai.Client | None = None
 
+# Keys supplied for one caller only -- a visitor to the hosted app using
+# their own quota. A ContextVar rather than os.environ: the environment is
+# shared by every session in the process, so a key put there would be spent
+# on (and readable by) whoever asks next. Set only inside `api_keys`, never
+# written to disk, and never used to build the shared cached client.
+_session_keys: ContextVar[dict[str, str] | None] = ContextVar("session_keys", default=None)
+
+
+@contextmanager
+def api_keys(google: str, groq: str) -> Iterator[None]:
+    """Use these keys for the calls made inside the block, then forget them."""
+    token = _session_keys.set({"GOOGLE_API_KEY": google, "GROQ_API_KEY": groq})
+    try:
+        yield
+    finally:
+        _session_keys.reset(token)
+
+
+def _session_key(name: str) -> str | None:
+    keys = _session_keys.get()
+    return keys[name] if keys else None
+
+
+def _new_google_client(api_key: str) -> genai.Client:
+    return genai.Client(
+        api_key=api_key,
+        # Without this the client waits forever on a stalled connection.
+        # A hang is worse than a failure here: backoff only retries what
+        # raises, so one dead socket silently parks an overnight grid
+        # run rather than costing it a row. Cost us 50 idle minutes.
+        http_options=types.HttpOptions(timeout=REQUEST_TIMEOUT_MS),
+    )
+
 
 def _get_google_client() -> genai.Client:
     global _google_client
+    session_key = _session_key("GOOGLE_API_KEY")
+    if session_key:
+        # Built per call and dropped after it, so a visitor's key is never
+        # kept in the module-level client another session would reuse.
+        return _new_google_client(session_key)
     if _google_client is None:
-        _google_client = genai.Client(
-            api_key=os.environ["GOOGLE_API_KEY"],
-            # Without this the client waits forever on a stalled connection.
-            # A hang is worse than a failure here: backoff only retries what
-            # raises, so one dead socket silently parks an overnight grid
-            # run rather than costing it a row. Cost us 50 idle minutes.
-            http_options=types.HttpOptions(timeout=REQUEST_TIMEOUT_MS),
-        )
+        _google_client = _new_google_client(os.environ["GOOGLE_API_KEY"])
     return _google_client
 
 
@@ -199,9 +232,16 @@ def call_gemini(
 ) -> str:
     def send() -> str:
         # Inside send() so a cache hit is never throttled: replaying a
-        # finished run from disk should cost nothing.
-        _gemini_limiter.wait()
-        response = _get_google_client().models.generate_content(
+        # finished run from disk should cost nothing. The limiter paces the
+        # environment's key; a caller's own key has its own limits, and
+        # backoff covers them.
+        if not _session_key("GOOGLE_API_KEY"):
+            _gemini_limiter.wait()
+        # Held in a local for the whole call: a per-session client has no
+        # other reference, and once collected it closes its connection
+        # mid-request ("the client has been closed").
+        client = _get_google_client()
+        response = client.models.generate_content(
             model=model,
             contents=prompt,
             config={"temperature": temperature},
@@ -219,10 +259,13 @@ def call_groq(
     cache_dir: Path = DEFAULT_CACHE_DIR,
 ) -> str:
     def send() -> str:
-        _groq_limiter.wait()
+        session_key = _session_key("GROQ_API_KEY")
+        if not session_key:
+            _groq_limiter.wait()
+        api_key = session_key or os.environ["GROQ_API_KEY"]
         response = requests.post(
             "https://api.groq.com/openai/v1/chat/completions",
-            headers={"Authorization": f"Bearer {os.environ['GROQ_API_KEY']}"},
+            headers={"Authorization": f"Bearer {api_key}"},
             json={
                 "model": model,
                 "messages": [{"role": "user", "content": prompt}],
