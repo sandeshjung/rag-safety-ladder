@@ -55,6 +55,10 @@ RESULT_SETS = {
     "frontier-clean": "Claude Opus 5.5 on rung D prompts, old-vs-new and near-miss",
 }
 
+# The first validation runs, before the clean and injection grids were split.
+# No reported number comes from them; kept in results/ as history only.
+HIDDEN_SETS = {"grid"}
+
 CATEGORY_NAMES = {
     "answerable_single": "answerable, one document",
     "answerable_synthesis": "answerable, several documents",
@@ -167,7 +171,9 @@ def show_row(row: dict, grades: dict) -> None:
 def browse() -> None:
     # The published sets first, then any file a reader's own runs wrote.
     found = sorted(
-        p.stem for p in (ROOT / "results").glob("*.jsonl") if not p.stem.endswith("-grades")
+        p.stem
+        for p in (ROOT / "results").glob("*.jsonl")
+        if not p.stem.endswith("-grades") and p.stem not in HIDDEN_SETS
     )
     names = [n for n in RESULT_SETS if n in found] + [n for n in found if n not in RESULT_SETS]
     name = st.sidebar.selectbox(
